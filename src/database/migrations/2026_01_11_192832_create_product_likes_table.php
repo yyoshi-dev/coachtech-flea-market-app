@@ -13,7 +13,10 @@ return new class extends Migration
     {
         Schema::create('product_likes', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('user_id')->constrained();
+            $table->foreignId('product_id')->constrained();
             $table->timestamps();
+            $table->unique(['user_id', 'product_id']);
         });
     }
 

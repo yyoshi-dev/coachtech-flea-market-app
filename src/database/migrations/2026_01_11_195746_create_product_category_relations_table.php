@@ -12,8 +12,9 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('product_category_relations', function (Blueprint $table) {
-            $table->id();
-            $table->timestamps();
+            $table->foreignId('product_id')->constrained();
+            $table->foreignId('product_category_id')->constrained()->restrictOnDelete();
+            $table->unique(['product_id', 'product_category_id']);
         });
     }
 
