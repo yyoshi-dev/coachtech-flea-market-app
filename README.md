@@ -70,7 +70,9 @@
 - phpMyAdmin: 5.2.3
 
 ## ER図
-![ER図](docs/er.drawio.png)
+![ER図](docs/requirements/er_diagram.drawio.png)
+
+※ 詳細要件は、[要件定義書](docs/requirements.md)に記載している
 
 ## URL (開発環境)
 - 商品一覧画面 (トップ画面): http://localhost/
