@@ -21,6 +21,10 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        'postal_code',
+        'address',
+        'building',
+        'profile_image_path',
     ];
 
     /**
@@ -43,5 +47,26 @@ class User extends Authenticatable
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
         ];
+    }
+
+    // productsテーブルとのリレーション
+    public function products()
+    {
+        return $this->hasMany(Product::class);
+    }
+    // ordersテーブルとのリレーション
+    public function orders()
+    {
+        return $this->hasMany(Order::class);
+    }
+    // product_likesテーブルとのリレーション
+    public function productLikes()
+    {
+        return $this->hasMany(ProductLike::class);
+    }
+    // product_commentsテーブルとのリレーション
+    public function productComments()
+    {
+        return $this->hasMany(ProductComment::class);
     }
 }
