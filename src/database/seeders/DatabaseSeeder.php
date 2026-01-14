@@ -15,11 +15,22 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        // User::factory(10)->create();
+        // usersのダミーデータ作成
+        User::factory(10)->create();
 
-        User::factory()->create([
-            'name' => 'Test User',
-            'email' => 'test@example.com',
-        ]);
+        // payment_methodsのダミーデータの作成
+        $this->call(PaymentMethodSeeder::class);
+
+        // product_categoriesのダミーデータ作成
+        $this->call(ProductCategorySeeder::class);
+
+        // product_conditionsのダミーデータ作成
+        $this->call(ProductConditionSeeder::class);
+
+        // productsのダミーデータの作成
+        $this->call(ProductSeeder::class);
+
+        // product_category_relationsのダミーデータの作成
+        $this->call(ProductCategoryRelationSeeder::class);
     }
 }
