@@ -13,10 +13,16 @@ use Illuminate\Validation\ValidationException;
 use Laravel\Fortify\Fortify;
 
 use Laravel\Fortify\Http\Requests\LoginRequest as FortifyLoginRequest;
-use App\Http\Requests\LoginRequest as AppLoginRequest;
+use App\Http\Requests\LoginRequest as CustomLoginRequest;
+
+use Laravel\Fortify\Contracts\RegisterResponse as FortifyRegisterResponse;
+use App\Responses\Fortify\RegisterResponse as CustomRegisterResponse;
+
+use Laravel\Fortify\Contracts\VerifyEmailResponse as FortifyVerifyEmailResponse;
+use App\Responses\Fortify\VerifyEmailResponse as CustomVerifyEmailResponse;
 
 use Laravel\Fortify\Contracts\LogoutResponse as FortifyLogoutResponse;
-use App\Actions\Fortify\LogoutResponse;
+use App\Responses\Fortify\LogoutResponse as CustomLogoutResponse;
 
 class FortifyServiceProvider extends ServiceProvider
 {
@@ -26,10 +32,16 @@ class FortifyServiceProvider extends ServiceProvider
     public function register(): void
     {
         // FortifyのLoginRequestを自作のものに置き換え
-        $this->app->bind(FortifyLoginRequest::class, AppLoginRequest::class);
+        $this->app->bind(FortifyLoginRequest::class, CustomLoginRequest::class);
+
+        // 会員登録後にメール認証誘導画面に遷移するよう置き換え
+        $this->app->bind(FortifyRegisterResponse::class, CustomRegisterResponse::class);
+
+        // メール認証後のリダイレクト先を置き換え
+        $this->app->bind(FortifyVerifyEmailResponse::class, CustomVerifyEmailResponse::class);
 
         // Logout処理時に"/login"にリダイレクトする設定に置き換え
-        $this->app->singleton(FortifyLogoutResponse::class, LogoutResponse::class);
+        $this->app->bind(FortifyLogoutResponse::class, CustomLogoutResponse::class);
     }
 
     /**
