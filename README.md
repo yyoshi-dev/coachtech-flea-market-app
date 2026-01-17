@@ -80,6 +80,7 @@
 - MySQL: 8.0.40
 - nginx: 1.27.2
 - phpMyAdmin: 5.2.3
+- mailhog: 1.0.1
 
 ---
 
@@ -95,3 +96,4 @@
 - 会員登録画面: http://localhost/register
 - ログイン画面: http://localhost/login
 - phpMyAdmin: http://localhost:8080/
+- mailhog: http://localhost:8025/
