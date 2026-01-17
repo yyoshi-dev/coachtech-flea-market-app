@@ -5,7 +5,7 @@
 ### Dockerビルド
 1. リポジトリをクローン
     ```bash
-    git clone git@github.com:yyoshi-dev/coachtech-freemarket-app.git
+    git clone git@github.com:yyoshi-dev/coachtech-flea-market-app.git
     ```
 
 2. ディレクトリに移動
