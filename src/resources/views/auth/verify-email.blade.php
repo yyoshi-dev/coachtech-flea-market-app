@@ -12,7 +12,7 @@
     </span>
 
     <div class="verification-content__link">
-        <a href="{{ route('verification.notice') }}">認証はこちらから</a>
+        <a href="http://localhost:8025/">認証はこちらから</a>
     </div>
 
     <form action="{{ route('verification.send') }}" method="post" class="verification-form">
