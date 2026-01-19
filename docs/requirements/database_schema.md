@@ -9,8 +9,8 @@
 | name               | varchar(255)    |             |            | ○        |             |
 | email              | varchar(255)    |             | ○          | ○        |             |
 | password           | varchar(255)    |             |            | ○        |             |
-| postal_code        | varchar(8)      |             |            | ○        |             |
-| address            | varchar(255)    |             |            | ○        |             |
+| postal_code        | varchar(8)      |             |            |          |             |
+| address            | varchar(255)    |             |            |          |             |
 | building           | varchar(255)    |             |            |          |             |
 | profile_image_path | varchar(255)    |             |            |          |             |
 | email_verified_at  | timestamp       |             |            |          |             |
