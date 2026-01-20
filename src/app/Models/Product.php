@@ -48,4 +48,10 @@ class Product extends Model
     {
         return $this->belongsToMany(ProductCategory::class, 'product_category_relations');
     }
+
+    // is_soldの計算
+    public function getIsSoldAttribute()
+    {
+        return $this->sold_at !== null;
+    }
 }
