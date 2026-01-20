@@ -41,7 +41,7 @@ class ProductSeeder extends Seeder
             ],
             [
                 'id' => 3,
-                'user_id' => 1,
+                'user_id' => 2,
                 'name' => '玉ねぎ3束',
                 'brand_name' => 'なし',
                 'description' => '新鮮な玉ねぎ3束のセット',
@@ -77,7 +77,7 @@ class ProductSeeder extends Seeder
             ],
             [
                 'id' => 6,
-                'user_id' => 2,
+                'user_id' => 3,
                 'name' => 'マイク',
                 'brand_name' => 'なし',
                 'description' => '高音質のレコーディング用マイク',
