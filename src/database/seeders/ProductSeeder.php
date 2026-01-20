@@ -24,7 +24,8 @@ class ProductSeeder extends Seeder
                 'price' => 15000,
                 'product_condition_id' => 1,
                 'likes_count' => 0,
-                'comments_count' => 0
+                'comments_count' => 0,
+                'sold_at' => null
             ],
             [
                 'id' => 2,
@@ -35,7 +36,8 @@ class ProductSeeder extends Seeder
                 'price' => 5000,
                 'product_condition_id' => 2,
                 'likes_count' => 0,
-                'comments_count' => 0
+                'comments_count' => 0,
+                'sold_at' => null
             ],
             [
                 'id' => 3,
@@ -46,7 +48,8 @@ class ProductSeeder extends Seeder
                 'price' => 300,
                 'product_condition_id' => 3,
                 'likes_count' => 0,
-                'comments_count' => 0
+                'comments_count' => 0,
+                'sold_at' => null
             ],
             [
                 'id' => 4,
@@ -57,7 +60,8 @@ class ProductSeeder extends Seeder
                 'price' => 4000,
                 'product_condition_id' => 4,
                 'likes_count' => 0,
-                'comments_count' => 0
+                'comments_count' => 0,
+                'sold_at' => now()
             ],
             [
                 'id' => 5,
@@ -68,7 +72,8 @@ class ProductSeeder extends Seeder
                 'price' => 45000,
                 'product_condition_id' => 1,
                 'likes_count' => 0,
-                'comments_count' => 0
+                'comments_count' => 0,
+                'sold_at' => null
             ],
             [
                 'id' => 6,
@@ -79,7 +84,8 @@ class ProductSeeder extends Seeder
                 'price' => 8000,
                 'product_condition_id' => 2,
                 'likes_count' => 0,
-                'comments_count' => 0
+                'comments_count' => 0,
+                'sold_at' => now()
             ],
             [
                 'id' => 7,
@@ -90,7 +96,8 @@ class ProductSeeder extends Seeder
                 'price' => 3500,
                 'product_condition_id' => 3,
                 'likes_count' => 0,
-                'comments_count' => 0
+                'comments_count' => 0,
+                'sold_at' => null
             ],
             [
                 'id' => 8,
@@ -101,7 +108,8 @@ class ProductSeeder extends Seeder
                 'price' => 500,
                 'product_condition_id' => 4,
                 'likes_count' => 0,
-                'comments_count' => 0
+                'comments_count' => 0,
+                'sold_at' => null
             ],
             [
                 'id' => 9,
@@ -112,7 +120,8 @@ class ProductSeeder extends Seeder
                 'price' => 4000,
                 'product_condition_id' => 1,
                 'likes_count' => 0,
-                'comments_count' => 0
+                'comments_count' => 0,
+                'sold_at' => null
             ],
             [
                 'id' => 10,
@@ -123,7 +132,8 @@ class ProductSeeder extends Seeder
                 'price' => 2500,
                 'product_condition_id' => 2,
                 'likes_count' => 0,
-                'comments_count' => 0
+                'comments_count' => 0,
+                'sold_at' => null
             ],
         ];
 
