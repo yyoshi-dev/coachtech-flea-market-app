@@ -1,7 +1,12 @@
 <?php
 
+use App\Http\Controllers\ItemController;
 use Illuminate\Support\Facades\Route;
 
+// 商品一覧
+Route::get('/', [ItemController::class, 'index']);
+Route::get('/search', [ItemController::class, 'search']);
+Route::get('/item/{item_id}', [ItemController::class, 'show']);
 
 Route::get('/email/verify', function () {
     return view('auth.verify-email');
