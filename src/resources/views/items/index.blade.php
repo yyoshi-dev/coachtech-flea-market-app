@@ -42,10 +42,16 @@
 <div class="item-content">
     {{-- タブ部分 --}}
     <div class="tab-menu">
-        <a href="/" class="tab-menu__link {{ request('tab') !== 'mylist' ? 'active' : '' }}">
+        <a
+            href="/?keyword={{ request('keyword') }}"
+            class="tab-menu__link {{ request('tab') !== 'mylist' ? 'active' : '' }}"
+        >
             おすすめ
         </a>
-        <a href="/?tab=mylist" class="tab-menu__link {{ request('tab') === 'mylist' ? 'active' : '' }}">
+        <a
+            href="/?tab=mylist&keyword={{ request('keyword') }}"
+            class="tab-menu__link {{ request('tab') === 'mylist' ? 'active' : '' }}"
+        >
             マイリスト
         </a>
     </div>
@@ -54,17 +60,19 @@
     <ul class="item-list">
         @foreach ($products as $product)
             <li class="item-list__item">
-                <div class="item-list__image-wrapper">
-                    <img
-                        src="{{ asset('storage/' . $product->product_image_path) }}"
-                        alt="{{ $product->name }}"
-                        class="item-list__image"
-                    >
-                    @if ($product->is_sold)
-                        <span class="item-list__sold-label">Sold</span>
-                    @endif
-                </div>
-                <p class="item-list__name">{{ $product->name }}</p>
+                <a href="/item/{{ $product->id }}" class="item-list__detail-link">
+                    <div class="item-list__image-wrapper">
+                        <img
+                            src="{{ asset('storage/' . $product->product_image_path) }}"
+                            alt="{{ $product->name }}"
+                            class="item-list__image"
+                        >
+                        @if ($product->is_sold)
+                            <span class="item-list__sold-label">Sold</span>
+                        @endif
+                    </div>
+                    <p class="item-list__name">{{ $product->name }}</p>
+                </a>
             </li>
         @endforeach
     </ul>
