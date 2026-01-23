@@ -93,9 +93,22 @@ class ItemController extends Controller
             'productCondition',
             'productLikes',
             'productComments.user'
-
         ])->findOrFail($item_id);
 
         return view('items.detail', compact('product'));
+    }
+
+    // いいねの処理
+    public function like($item_id)
+    {
+        $product = Product::findOrFail($item_id);
+        if ($product->productLikes()->where('user_id', Auth::id())->exists()) {
+            $product->productLikes()->where('user_id', Auth::id())->delete();
+        }
+        else {
+            $product->productLikes()->firstOrCreate(['user_id' => Auth::id()]);
+        }
+
+        return redirect("/item/{$item_id}");
     }
 }

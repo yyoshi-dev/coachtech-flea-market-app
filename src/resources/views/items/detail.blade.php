@@ -61,13 +61,43 @@
             <p class="item__price">\{{ number_format($product->price) }} (税込)</p>
             <div class="item__action-area">
                 <div class="item__likes-area">
-                    {{-- いいねボタンを後で実装 (今はロゴを仮置き) --}}
-                    <img src="{{ asset('images/heart-logo-default.png') }}" alt="heart-logo-default">
+                    {{-- いいね機能 --}}
+                    @guest
+                        <img
+                            src="{{ asset('images/heart-logo-default.png') }}"
+                            alt="heart-logo-default"
+                            class="item__likes-icon"
+                        >
+                    @endguest
+                    @auth
+                        <form action="/item/{{ $product->id }}/like" method="post" class="like-form">
+                            @csrf
+                            <button type="submit" class="like-form__btn">
+                                @if ($product->productLikes->contains('user_id', auth()->id()))
+                                    <img
+                                        src="{{ asset('images/heart-logo-pink.png') }}"
+                                        alt="heart-logo-pink"
+                                        class="item__likes-icon"
+                                    >
+                                @else
+                                    <img
+                                        src="{{ asset('images/heart-logo-default.png') }}"
+                                        alt="heart-logo-default"
+                                        class="item__likes-icon"
+                                    >
+                                @endif
+                            </button>
+                        </form>
+                    @endauth
                     <p class="item__likes-count">{{ $product->productLikes->count() }}</p>
                 </div>
                 <div class="item__comments-area">
-                    <img src="{{ asset('images/speech-bubble-logo.png') }}" alt="speech-bubble-logo">
-                    <p class="item__comments-count">{{ $product->comments_count }}</p>
+                    <img
+                        src="{{ asset('images/speech-bubble-logo.png') }}"
+                        alt="speech-bubble-logo"
+                        class="item__comments-icon"
+                    >
+                    <p class="item__comments-count">{{ $product->productComments->count() }}</p>
                 </div>
             </div>
             <a href="/purchase/{{ $product->id }}" class="item__purchase-link">購入手続きへ</a>
@@ -108,7 +138,7 @@
             @endif
 
             {{-- コメント入力 --}}
-            <form action="/comment/{{ $product->id }}" method="post" class="comment-form">
+            <form action="/item/{{ $product->id }}/comment" method="post" class="comment-form">
                 @csrf
                 <label for="comment" class="comment-form__label">商品へのコメント</label>
                 <textarea
