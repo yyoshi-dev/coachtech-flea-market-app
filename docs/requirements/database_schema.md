@@ -28,8 +28,6 @@
 | price                | integer         |             |            | ○        |                        |
 | product_condition_id | unsigned bigint |             |            | ○        | product_conditions(id) |
 | product_image_path   | varchar(255)    |             |            | ○        |                        |
-| likes_count          | integer         |             |            | ○        |                        |
-| comments_count       | integer         |             |            | ○        |                        |
 | sold_at              | timestamp       |             |            |          |                        |
 | created_at           | timestamp       |             |            |          |                        |
 | updated_at           | timestamp       |             |            |          |                        |

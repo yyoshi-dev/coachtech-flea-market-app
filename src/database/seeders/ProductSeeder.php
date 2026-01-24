@@ -23,8 +23,6 @@ class ProductSeeder extends Seeder
                 'description' => 'スタイリッシュなデザインのメンズ腕時計',
                 'price' => 15000,
                 'product_condition_id' => 1,
-                'likes_count' => 0,
-                'comments_count' => 0,
                 'sold_at' => null
             ],
             [
@@ -35,8 +33,6 @@ class ProductSeeder extends Seeder
                 'description' => '高速で信頼性の高いハードディスク',
                 'price' => 5000,
                 'product_condition_id' => 2,
-                'likes_count' => 0,
-                'comments_count' => 0,
                 'sold_at' => null
             ],
             [
@@ -47,8 +43,6 @@ class ProductSeeder extends Seeder
                 'description' => '新鮮な玉ねぎ3束のセット',
                 'price' => 300,
                 'product_condition_id' => 3,
-                'likes_count' => 0,
-                'comments_count' => 0,
                 'sold_at' => null
             ],
             [
@@ -59,8 +53,6 @@ class ProductSeeder extends Seeder
                 'description' => 'クラシックなデザインの革靴',
                 'price' => 4000,
                 'product_condition_id' => 4,
-                'likes_count' => 0,
-                'comments_count' => 0,
                 'sold_at' => now()
             ],
             [
@@ -71,8 +63,6 @@ class ProductSeeder extends Seeder
                 'description' => '高性能なノートパソコン',
                 'price' => 45000,
                 'product_condition_id' => 1,
-                'likes_count' => 0,
-                'comments_count' => 0,
                 'sold_at' => null
             ],
             [
@@ -83,8 +73,6 @@ class ProductSeeder extends Seeder
                 'description' => '高音質のレコーディング用マイク',
                 'price' => 8000,
                 'product_condition_id' => 2,
-                'likes_count' => 0,
-                'comments_count' => 0,
                 'sold_at' => now()
             ],
             [
@@ -95,8 +83,6 @@ class ProductSeeder extends Seeder
                 'description' => 'おしゃれなショルダーバッグ',
                 'price' => 3500,
                 'product_condition_id' => 3,
-                'likes_count' => 0,
-                'comments_count' => 0,
                 'sold_at' => null
             ],
             [
@@ -107,8 +93,6 @@ class ProductSeeder extends Seeder
                 'description' => '使いやすいタンブラー',
                 'price' => 500,
                 'product_condition_id' => 4,
-                'likes_count' => 0,
-                'comments_count' => 0,
                 'sold_at' => null
             ],
             [
@@ -119,8 +103,6 @@ class ProductSeeder extends Seeder
                 'description' => '手動のコーヒーミル',
                 'price' => 4000,
                 'product_condition_id' => 1,
-                'likes_count' => 0,
-                'comments_count' => 0,
                 'sold_at' => null
             ],
             [
@@ -131,8 +113,6 @@ class ProductSeeder extends Seeder
                 'description' => '便利なメイクアップセット',
                 'price' => 2500,
                 'product_condition_id' => 2,
-                'likes_count' => 0,
-                'comments_count' => 0,
                 'sold_at' => null
             ],
         ];

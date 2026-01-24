@@ -20,8 +20,6 @@ return new class extends Migration
             $table->integer('price');
             $table->foreignId('product_condition_id')->constrained()->restrictOnDelete();
             $table->string('product_image_path', 255);
-            $table->integer('likes_count');
-            $table->integer('comments_count');
             $table->timestamp('sold_at')->nullable();
             $table->timestamps();
         });
