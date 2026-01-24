@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\CommentRequest;
 use Illuminate\Http\Request;
 use App\Models\Product;
 use App\Models\ProductCategory;
@@ -88,8 +89,39 @@ class ItemController extends Controller
     // 商品詳細画面の表示
     public function show($item_id)
     {
-        $product = Product::findOrFail($item_id);
+        $product = Product::with([
+            'productCategories',
+            'productCondition',
+            'productLikes',
+            'productComments.user'
+        ])->findOrFail($item_id);
 
         return view('items.detail', compact('product'));
+    }
+
+    // いいねの処理
+    public function like($item_id)
+    {
+        $product = Product::findOrFail($item_id);
+        if ($product->productLikes()->where('user_id', Auth::id())->exists()) {
+            $product->productLikes()->where('user_id', Auth::id())->delete();
+        }
+        else {
+            $product->productLikes()->firstOrCreate(['user_id' => Auth::id()]);
+        }
+
+        return redirect("/item/{$item_id}");
+    }
+
+    // コメントの処理
+    public function comment(CommentRequest $request, $item_id)
+    {
+        ProductComment::create([
+            'user_id' => Auth::id(),
+            'product_id' => $item_id,
+            'comment' => $request->comment,
+        ]);
+
+        return redirect("/item/{$item_id}");
     }
 }

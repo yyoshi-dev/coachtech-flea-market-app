@@ -14,8 +14,6 @@ class Product extends Model
         'price',
         'product_condition_id',
         'product_image_path',
-        'likes_count',
-        'comments_count',
     ];
 
     // usersテーブルとのリレーション
