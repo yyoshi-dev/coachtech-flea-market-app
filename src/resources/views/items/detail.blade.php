@@ -151,7 +151,13 @@
                 @error('comment')
                 <p class="comment-form__error-message">{{ $message }}</p>
                 @enderror
-                <button type="submit" class="contact-form__btn">コメントを送信する</button>
+
+                @guest
+                    <button type="button" class="comment-form__btn">コメントを送信する</button>
+                @endguest
+                @auth
+                    <button type="submit" class="comment-form__btn">コメントを送信する</button>
+                @endauth
             </form>
         </div>
     </div>

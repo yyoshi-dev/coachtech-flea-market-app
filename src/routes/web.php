@@ -11,6 +11,8 @@ Route::get('/search', [ItemController::class, 'search']);
 Route::get('/item/{item_id}', [ItemController::class, 'show']);
 Route::post('/item/{item_id}/like', [ItemController::class, 'like'])
     ->middleware('auth');
+Route::post('/item/{item_id}/comment', [ItemController::class, 'comment'])
+    ->middleware('auth');
 
 // 認証
 Route::get('/email/verify', function () {
