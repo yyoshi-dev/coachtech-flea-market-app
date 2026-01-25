@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Http\Requests\AddressRequest;
+use App\Http\Requests\PurchaseRequest;
+use App\Models\Order;
 use App\Models\PaymentMethod;
 use App\Models\Product;
 use Illuminate\Support\Facades\Auth;
@@ -73,5 +75,27 @@ class PurchaseController extends Controller
         session(['purchase.address' => $address]);
 
         return redirect("/purchase/{$item_id}");
+    }
+
+    // 購入処理
+    public function purchase(PurchaseRequest $request, $item_id)
+    {
+        $delivery = unserialize($request->delivery_address);
+
+        Order::create([
+            'user_id' => Auth::id(),
+            'product_id' => $item_id,
+            'postal_code' => $delivery['postal_code'],
+            'address' => $delivery['address'],
+            'building' => $delivery['building'],
+            'payment_method_id' => $request->payment_method_id,
+            'created_at' => now(),
+        ]);
+
+        Product::where('id', $item_id)->update(['sold_at' => now()]);
+
+        session()->forget('purchase');
+
+        return redirect('/'); // stripe決済画面にリダイレクトするように要修正
     }
 }

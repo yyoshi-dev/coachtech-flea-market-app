@@ -6,13 +6,17 @@ use Illuminate\Database\Eloquent\Model;
 
 class Order extends Model
 {
+    // timestampsの自動入力をオフ
+    public $timestamps = false;
+
     protected $fillable = [
         'user_id',
         'product_id',
         'postal_code',
         'address',
         'building',
-        'payment_method_id'
+        'payment_method_id',
+        'created_at'
     ];
 
     // usersテーブルとのリレーション

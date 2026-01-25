@@ -105,12 +105,15 @@
             </div>
 
             {{-- 購入処理 --}}
-            <input type="hidden" name="postal_code" value="{{ $address['postal_code'] }}">
-            <input type="hidden" name="address" value="{{ $address['address'] }}">
-            <input type="hidden" name="building" value="{{ $address['building'] }}">
+            <input type="hidden" name="delivery_address" value="{{ serialize($address) }}">
+            @error('delivery_address')
+                <p class="purchase-form__error-message">{{ $message }}</p>
+            @enderror
             <input type="hidden" name="payment_method_id"
                 value="{{ $selectedPaymentMethod ? $selectedPaymentMethod->id : '' }}">
-            {{-- 以下だと、stripeの決済画面に接続されないので、要修正 --}}
+            @error('payment_method_id')
+                <p class="purchase-form__error-message">{{ $message }}</p>
+            @enderror
             <button type="submit" class="purchase__btn">購入する</button>
         </form>
     </div>
