@@ -32,60 +32,65 @@
 
 @section('content')
 <div class="purchase-content">
-    <form action="/purchase/{{ $product->id }}" method="post" class="purchase-form">
-        @csrf
-        <div class="purchase-settings">
-            {{-- 商品情報 --}}
-            <div class="purchase-item__description">
-                <div class="purchase-item__image-area">
-                    <img
-                        src="{{ asset('storage/' . $product->product_image_path) }}"
-                        alt="{{ $product->name }}"
-                        class="purchase-item__image"
-                    >
-                </div>
-                <div class="purchase-item__info-area">
-                    <span class="purchase-item__name">{{ $product->name }}</span>
-                    <p class="purchase-item__price">\{{ number_format($product->price) }}</p>
-                </div>
+    <div class="purchase-settings">
+        {{-- 商品情報 --}}
+        <div class="purchase-item__description">
+            <div class="purchase-item__image-area">
+                <img
+                    src="{{ asset('storage/' . $product->product_image_path) }}"
+                    alt="{{ $product->name }}"
+                    class="purchase-item__image"
+                >
             </div>
-
-            {{-- 支払い方法の設定 --}}
-            <div class="payment-methods__settings">
-                <label for="payment_method_id" class="payment-methods__title">支払い方法</label>
-                <select name="payment_method_id" id="payment_method_id" class="payment-methods__select">
-                    <option disabled selected>選択してください</option>
-                    @foreach ($paymentMethods as $paymentMethod)
-                        {{-- 選択した方法のみ先頭に✓マークを表示したいが、以下の書き方だと不十分であり、要修正になると思う --}}
-                        <option value="{{ $paymentMethod->id }}"
-                            {{ old('payment_method_id')==$paymentMethod->id ? 'selected' : '' }}>
-                            ✓{{ $paymentMethod->name }}
-                        </option>
-                    @endforeach
-                </select>
-            </div>
-
-            {{-- 配送先の設定 --}}
-            <div class="delivery-address__settings">
-                <div class="delivery-address__heading">
-                    <span class="delivery-address__title">配送先</span>
-                    <a href="/purchase/address/{{ $product->id }}" class="delivery-address__edit-link">
-                        変更する
-                    </a>
-                </div>
-                <div class="delivery-address__content">
-                    {{-- 以下だと、配送先を変更した事を反映出来ないので、要修正 --}}
-                    <span class="delivery-address__text">{{ $address['postal_code'] }}</span>
-                    <span class="delivery-address__text">{{ $address['address'] }}</span>
-                    <span class="delivery-address__text">{{ $address['building'] }}</span>
-                    <input type="hidden" name="postal_code" value="{{ $address['postal_code'] }}">
-                    <input type="hidden" name="address" value="{{ $address['address'] }}">
-                    <input type="hidden" name="building" value="{{ $address['building'] }}">
-                </div>
+            <div class="purchase-item__info-area">
+                <span class="purchase-item__name">{{ $product->name }}</span>
+                <p class="purchase-item__price">\{{ number_format($product->price) }}</p>
             </div>
         </div>
 
-        <div class="purchase-execution">
+        {{-- 支払い方法の設定 --}}
+        <div class="payment-methods__settings">
+            <form action="/purchase/payment/{{ $product->id }}" method="post" class="payment-methods__form">
+                @csrf
+                <label for="payment_method_id" class="payment-methods__title">支払い方法</label>
+                <select
+                    name="payment_method_id"
+                    id="payment_method_id"
+                    class="payment-methods__select"
+                    onchange="this.form.submit()"
+                >
+                    <option disabled {{ !$selectedPaymentMethod ? 'selected' : '' }}>選択してください</option>
+                    @foreach ($paymentMethods as $paymentMethod)
+                        <option value="{{ $paymentMethod->id }}"
+                            {{ $selectedPaymentMethod && $selectedPaymentMethod->id == $paymentMethod->id ? 'selected' : '' }}>
+                            {{ $selectedPaymentMethod && $selectedPaymentMethod->id == $paymentMethod->id ? '✓' : '' }}
+                            {{ $paymentMethod->name }}
+                        </option>
+                    @endforeach
+                </select>
+            </form>
+        </div>
+
+        {{-- 配送先の設定 --}}
+        <div class="delivery-address__settings">
+            <div class="delivery-address__heading">
+                <span class="delivery-address__title">配送先</span>
+                <a href="/purchase/address/{{ $product->id }}" class="delivery-address__edit-link">
+                    変更する
+                </a>
+            </div>
+            <div class="delivery-address__content">
+                <span class="delivery-address__text">{{ $address['postal_code'] }}</span>
+                <span class="delivery-address__text">{{ $address['address'] }}</span>
+                <span class="delivery-address__text">{{ $address['building'] }}</span>
+            </div>
+        </div>
+    </div>
+
+    <div class="purchase-execution">
+        <form action="/purchase/{{ $product->id }}" method="post" class="purchase-form">
+            @csrf
+            {{-- 小計 --}}
             <div class="purchase-summary">
                 <table class="purchase-summary__table">
                     <tr class="purchase-summary__row">
@@ -94,15 +99,21 @@
                     </tr>
                     <tr class="purchase-summary__row">
                         <th class="purchase-summary__header">支払い方法</th>
-                        {{-- 以下だと、選択した方法が反映されないので、要修正 --}}
-                        <td class="purchase-summary__text">{{ $paymentMethod->name }}</td>
+                        <td class="purchase-summary__text">{{ $summaryPaymentMethod->name }}</td>
                     </tr>
                 </table>
             </div>
 
+            {{-- 購入処理 --}}
+            <input type="hidden" name="postal_code" value="{{ $address['postal_code'] }}">
+            <input type="hidden" name="address" value="{{ $address['address'] }}">
+            <input type="hidden" name="building" value="{{ $address['building'] }}">
+            <input type="hidden" name="payment_method_id"
+                value="{{ $selectedPaymentMethod ? $selectedPaymentMethod->id : '' }}">
             {{-- 以下だと、stripeの決済画面に接続されないので、要修正 --}}
             <button type="submit" class="purchase__btn">購入する</button>
-        </div>
-    </form>
+        </form>
+    </div>
 </div>
 @endsection
+

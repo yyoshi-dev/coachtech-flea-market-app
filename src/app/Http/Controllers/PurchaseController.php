@@ -17,6 +17,13 @@ class PurchaseController extends Controller
         $paymentMethods = PaymentMethod::all();
         $user = Auth::user();
 
+        // sessionのリセット
+        if (session('purchase.product_id') !== $item_id) {
+            session()->forget('purchase.payment_method_id');
+            session()->forget('purchase.address');
+            session(['purchase.product_id' => $item_id]);
+        }
+
         // session情報があれば、session情報を採用し、なければユーザー情報を採用
         $address = session('purchase.address', [
             'postal_code' => $user->postal_code,
@@ -24,7 +31,27 @@ class PurchaseController extends Controller
             'building' => $user->building
         ]);
 
-        return view('items.purchase', compact('product', 'paymentMethods', 'address'));
+        // session情報から支払い方法を選択
+        $selectedPaymentMethodId = session('purchase.payment_method_id');
+        $selectedPaymentMethod = PaymentMethod::find($selectedPaymentMethodId);
+        // 小計や購入処理に渡す支払い方法を渡す
+        $summaryPaymentMethod = $selectedPaymentMethod
+            ?? PaymentMethod::find(PaymentMethod::DEFAULT_METHOD_ID);
+
+        return view('items.purchase', compact(
+            'product',
+            'paymentMethods',
+            'selectedPaymentMethod',
+            'summaryPaymentMethod',
+            'address'
+            ));
+    }
+
+    // 支払い方法保存処理
+    public function storePaymentMethodSelection(Request $request, $item_id)
+    {
+        session(['purchase.payment_method_id' => $request->payment_method_id]);
+        return redirect("/purchase/{$item_id}");
     }
 
     // 送付先住所変更画面
@@ -42,6 +69,7 @@ class PurchaseController extends Controller
             'building'
         ]);
 
+        // sessionへの追加
         session(['purchase.address' => $address]);
 
         return redirect("/purchase/{$item_id}");

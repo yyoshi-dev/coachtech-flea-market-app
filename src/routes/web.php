@@ -24,6 +24,7 @@ Route::get('/email/verify', function () {
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/purchase/{item_id}', [PurchaseController::class, 'showPurchasePage']);
     Route::get('/purchase/address/{item_id}', [PurchaseController::class, 'showAddressEditPage']);
+    Route::post('/purchase/payment/{item_id}', [PurchaseController::class, 'storePaymentMethodSelection']);
     Route::post('/purchase/{item_id}', [PurchaseController::class, 'purchase']);
     Route::post('/purchase/address/{item_id}', [PurchaseController::class, 'updateAddress']);
     // Route::get('/sell', ...);
