@@ -34,7 +34,7 @@
     cp .env.example .env
     ```
 
-4. `.env`ファイルのDB設定を以下の通り修正
+4. `.env`ファイルのDB設定、Stripe用API設定を修正
     ```ini
     # DB設定
     DB_CONNECTION=mysql
@@ -43,7 +43,13 @@
     DB_DATABASE=laravel_db
     DB_USERNAME=laravel_user
     DB_PASSWORD=laravel_pass
+
+    # Stripe用API設定
+    STRIPE_SECRET=
+    STRIPE_PUBLIC=
     ```
+    ※ Stripe用のAPIキーは別途共有するものを使用する事
+    <br>
 
 5. アプリケーションキーを生成
     ```bash
@@ -81,6 +87,7 @@
 - nginx: 1.27.2
 - phpMyAdmin: 5.2.3
 - mailhog: 1.0.1
+- stripe/stripe-php: v19.2.0
 
 ---
 
