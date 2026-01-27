@@ -68,12 +68,13 @@
 | created_at        | timestamp       |             |            | ○        |                     |
 
 ### 7. payment_methodsテーブル
-| カラム名   | 型              | PRIMARY KEY | UNIQUE KEY | NOT NULL | FOREIGN KEY |
-| ---------- | --------------- | ----------- | ---------- | -------- | ----------- |
-| id         | unsigned bigint | ○           |            | ○        |             |
-| name       | varchar(50)     |             |            | ○        |             |
-| created_at | timestamp       |             |            |          |             |
-| updated_at | timestamp       |             |            |          |             |
+| カラム名    | 型              | PRIMARY KEY | UNIQUE KEY | NOT NULL | FOREIGN KEY |
+| ----------- | --------------- | ----------- | ---------- | -------- | ----------- |
+| id          | unsigned bigint | ○           |            | ○        |             |
+| name        | varchar(50)     |             |            | ○        |             |
+| stripe_type | varchar(50)     |             |            | ○        |             |
+| created_at  | timestamp       |             |            |          |             |
+| updated_at  | timestamp       |             |            |          |             |
 
 ### 8. product_likesテーブル
 | カラム名   | 型              | PRIMARY KEY | UNIQUE KEY            | NOT NULL | FOREIGN KEY  |
