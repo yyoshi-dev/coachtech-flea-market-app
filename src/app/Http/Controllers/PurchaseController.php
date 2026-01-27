@@ -9,6 +9,8 @@ use App\Models\Order;
 use App\Models\PaymentMethod;
 use App\Models\Product;
 use Illuminate\Support\Facades\Auth;
+use Stripe\Checkout\Session;
+use Stripe\Stripe;
 
 class PurchaseController extends Controller
 {
@@ -77,25 +79,62 @@ class PurchaseController extends Controller
         return redirect("/purchase/{$item_id}");
     }
 
-    // 購入処理
+    // 購入処理 (stripe決済画面への遷移)
     public function purchase(PurchaseRequest $request, $item_id)
     {
-        $delivery = unserialize($request->delivery_address);
+        // 商品情報の取得
+        $product = Product::findOrFail($item_id);
 
+        // 支払い方法の取得
+        $paymentMethod = PaymentMethod::findOrFail($request->payment_method_id);
+        $stripePaymentMethod = $paymentMethod->stripe_type;
+
+        // stripe秘密キーの設定
+        Stripe::setApiKey(config('services.stripe.secret'));
+
+        // Checkout Sessionの作成
+        $session = Session::create([
+            'payment_method_types' => [$stripePaymentMethod],
+            'line_items' => [[
+                'price_data'=> [
+                    'currency' => 'jpy',
+                    'product_data' => ['name' => $product->name],
+                    'unit_amount' => $product->price,
+                ],
+                'quantity' => 1,
+            ]],
+            'mode' => 'payment',
+            'success_url' => url("/purchase/success/{$item_id}"),
+            'cancel_url' => url("/purchase/{$item_id}")
+        ]);
+
+        return redirect($session->url);
+    }
+
+    // 決済成功処理
+    public function handleStripeSuccess($item_id)
+    {
+        // sessionから購入情報を取得
+        $address = session('purchase.address');
+        $paymentMethodId = session('purchase.payment_method_id');
+
+        // Orderの作成
         Order::create([
             'user_id' => Auth::id(),
             'product_id' => $item_id,
-            'postal_code' => $delivery['postal_code'],
-            'address' => $delivery['address'],
-            'building' => $delivery['building'],
-            'payment_method_id' => $request->payment_method_id,
+            'postal_code' => $address['postal_code'],
+            'address' => $address['address'],
+            'building' => $address['building'],
+            'payment_method_id' => $paymentMethodId,
             'created_at' => now(),
         ]);
 
+        // 商品購入日の更新
         Product::where('id', $item_id)->update(['sold_at' => now()]);
 
+        // sessionのクリア
         session()->forget('purchase');
 
-        return redirect('/'); // stripe決済画面にリダイレクトするように要修正
+        return redirect('/');
     }
 }
