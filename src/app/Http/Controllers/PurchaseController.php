@@ -28,12 +28,15 @@ class PurchaseController extends Controller
             session(['purchase.product_id' => $item_id]);
         }
 
-        // session情報があれば、session情報を採用し、なければユーザー情報を採用
-        $address = session('purchase.address', [
-            'postal_code' => $user->postal_code,
-            'address' => $user->address,
-            'building' => $user->building
-        ]);
+        // session情報があればそれを使い、なければユーザー情報をsessionに保存
+        if (!session()->has('purchase.address')) {
+            session(['purchase.address' => [
+                'postal_code' => $user->postal_code,
+                'address' => $user->address,
+                'building' => $user->building
+            ]]);
+        }
+        $address = session('purchase.address');
 
         // session情報から支払い方法を選択
         $selectedPaymentMethodId = session('purchase.payment_method_id');
