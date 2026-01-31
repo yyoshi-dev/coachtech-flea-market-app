@@ -33,3 +33,6 @@ Route::middleware(['auth', 'verified'])->group(function () {
     // Route::get('/mypage', ...);
     // Route::get('/mypage/profile', ...);
 });
+
+// Stripe Webhook用のルート
+Route::post('/stripe/webhook', [PurchaseController::class, 'handleStripeWebhook']);

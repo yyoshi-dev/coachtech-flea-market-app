@@ -16,7 +16,4 @@ class PaymentMethod extends Model
     {
         return $this->hasMany(Order::class);
     }
-
-    // 購入画面の初期表示ID
-    const DEFAULT_METHOD_ID = 1;
 }

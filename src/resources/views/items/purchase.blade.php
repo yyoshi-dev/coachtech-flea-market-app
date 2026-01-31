@@ -99,7 +99,9 @@
                     </tr>
                     <tr class="purchase-summary__row">
                         <th class="purchase-summary__header">支払い方法</th>
-                        <td class="purchase-summary__text">{{ $summaryPaymentMethod->name }}</td>
+                        @if ($selectedPaymentMethod)
+                            <td class="purchase-summary__text">{{ $selectedPaymentMethod->name }}</td>
+                        @endif
                     </tr>
                 </table>
             </div>

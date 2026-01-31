@@ -22,11 +22,10 @@ class PurchaseController extends Controller
         $user = Auth::user();
 
         // sessionのリセット
-        if (session('purchase.product_id') !== $item_id) {
-            session()->forget('purchase.payment_method_id');
-            session()->forget('purchase.address');
-            session(['purchase.product_id' => $item_id]);
-        }
+    if (!session()->has('purchase') || session('purchase.product_id') !== $item_id) {
+        session()->forget('purchase');
+        session(['purchase.product_id' => $item_id]);
+    }
 
         // session情報があればそれを使い、なければユーザー情報をsessionに保存
         if (!session()->has('purchase.address')) {
@@ -40,16 +39,14 @@ class PurchaseController extends Controller
 
         // session情報から支払い方法を選択
         $selectedPaymentMethodId = session('purchase.payment_method_id');
-        $selectedPaymentMethod = PaymentMethod::find($selectedPaymentMethodId);
-        // 小計や購入処理に渡す支払い方法を渡す
-        $summaryPaymentMethod = $selectedPaymentMethod
-            ?? PaymentMethod::find(PaymentMethod::DEFAULT_METHOD_ID);
+        $selectedPaymentMethod = $selectedPaymentMethodId
+            ? PaymentMethod::find($selectedPaymentMethodId)
+            : null;
 
         return view('items.purchase', compact(
             'product',
             'paymentMethods',
             'selectedPaymentMethod',
-            'summaryPaymentMethod',
             'address'
             ));
     }
@@ -92,6 +89,10 @@ class PurchaseController extends Controller
         $paymentMethod = PaymentMethod::findOrFail($request->payment_method_id);
         $stripePaymentMethod = $paymentMethod->stripe_type;
 
+        // ユーザー・住所情報取得
+        $user = Auth::user();
+        $address = session('purchase.address');
+
         // stripe秘密キーの設定
         Stripe::setApiKey(config('services.stripe.secret'));
 
@@ -108,36 +109,87 @@ class PurchaseController extends Controller
             ]],
             'mode' => 'payment',
             'success_url' => url("/purchase/success/{$item_id}"),
-            'cancel_url' => url("/purchase/{$item_id}")
+            'cancel_url' => url("/purchase/{$item_id}"),
+            'payment_intent_data' => [
+                'metadata' => [
+                    'product_id' => $product->id,
+                    'user_id' => $user->id,
+                    'postal_code' => $address['postal_code'],
+                    'address' => $address['address'],
+                    'building' => $address['building'],
+                    'payment_method_id' => $paymentMethod->id,
+                ],
+            ],
         ]);
 
         return redirect($session->url);
     }
 
-    // 決済成功処理
+    // 決済成功後の処理
     public function handleStripeSuccess($item_id)
     {
-        // sessionから購入情報を取得
-        $address = session('purchase.address');
-        $paymentMethodId = session('purchase.payment_method_id');
-
-        // Orderの作成
-        Order::create([
-            'user_id' => Auth::id(),
-            'product_id' => $item_id,
-            'postal_code' => $address['postal_code'],
-            'address' => $address['address'],
-            'building' => $address['building'],
-            'payment_method_id' => $paymentMethodId,
-            'created_at' => now(),
-        ]);
-
-        // 商品購入日の更新
-        Product::where('id', $item_id)->update(['sold_at' => now()]);
-
         // sessionのクリア
         session()->forget('purchase');
 
         return redirect('/');
+    }
+
+    // Stripe Webhookの処理
+    public function handleStripeWebhook(Request $request)
+    {
+        // Stripeから送られてくる生データ
+        $payload = $request->getContent();
+        $sigHeader = $request->header('Stripe-Signature');
+        $endpointSecret = config('services.stripe.webhook_secret');
+
+        // Stripeの署名認証
+        try {
+            $event = \Stripe\Webhook::constructEvent(
+                $payload,
+                $sigHeader,
+                $endpointSecret
+            );
+        } catch (\Exception $e) {
+            return response('Invalid', 400);
+        }
+
+        // 支払い完了イベントのみの処理
+        if ($event->type === 'payment_intent.succeeded') {
+            $intent = $event->data->object;
+
+            // metadataの取得
+            $productId = $intent->metadata->product_id ?? null;
+            $userId = $intent->metadata->user_id ?? null;
+            $postalCode = $intent->metadata->postal_code ?? null;
+            $address = $intent->metadata->address ?? null;
+            $building = $intent->metadata->building ?? null;
+            $paymentMethodId = $intent->metadata->payment_method_id ?? null;
+
+            if ($productId && $userId && $paymentMethodId) {
+                // 二重登録防止
+                $exists = Order::where('user_id', $userId)
+                    ->where('product_id', $productId)
+                    ->exists();
+
+                if (! $exists) {
+                    // Orderの作成
+                    Order::create([
+                        'user_id' => $userId,
+                        'product_id' => $productId,
+                        'postal_code' => $postalCode,
+                        'address' => $address,
+                        'building' => $building,
+                        'payment_method_id' => $paymentMethodId,
+                        'created_at' => now(),
+                    ]);
+
+                    // 商品購入日の更新
+                    Product::where('id', $productId)->update(['sold_at' => now()]);
+                }
+            }
+        }
+
+        // Webhook は常に 200 を返す
+        return response('OK', 200);
     }
 }
