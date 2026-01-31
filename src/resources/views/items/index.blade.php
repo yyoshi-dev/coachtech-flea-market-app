@@ -61,17 +61,17 @@
         @foreach ($products as $product)
             <li class="item-list__item">
                 <a href="/item/{{ $product->id }}" class="item-list__detail-link">
-                    <div class="item-list__image-wrapper">
-                        <img
-                            src="{{ asset('storage/' . $product->product_image_path) }}"
-                            alt="{{ $product->name }}"
-                            class="item-list__image"
-                        >
+                    <img
+                        src="{{ asset('storage/' . $product->product_image_path) }}"
+                        alt="{{ $product->name }}"
+                        class="item-list__image"
+                    >
+                    <div class="item-list__name-wrapper">
+                        <p class="item-list__name">{{ $product->name }}</p>
                         @if ($product->is_sold)
                             <span class="item-list__sold-label">Sold</span>
                         @endif
                     </div>
-                    <p class="item-list__name">{{ $product->name }}</p>
                 </a>
             </li>
         @endforeach
