@@ -62,33 +62,24 @@
             <div class="item__action-area">
                 <div class="item__likes-area">
                     {{-- いいね機能 --}}
-                    @guest
-                        <img
-                            src="{{ asset('images/heart-logo-default.png') }}"
-                            alt="heart-logo-default"
-                            class="item__likes-icon"
-                        >
-                    @endguest
-                    @auth
-                        <form action="/item/{{ $product->id }}/like" method="post" class="like-form">
-                            @csrf
-                            <button type="submit" class="like-form__btn">
-                                @if ($product->productLikes->contains('user_id', auth()->id()))
-                                    <img
-                                        src="{{ asset('images/heart-logo-pink.png') }}"
-                                        alt="heart-logo-pink"
-                                        class="item__likes-icon"
-                                    >
-                                @else
-                                    <img
-                                        src="{{ asset('images/heart-logo-default.png') }}"
-                                        alt="heart-logo-default"
-                                        class="item__likes-icon"
-                                    >
-                                @endif
-                            </button>
-                        </form>
-                    @endauth
+                    <form action="/item/{{ $product->id }}/like" method="post" class="like-form">
+                        @csrf
+                        <button type="submit" class="like-form__btn">
+                            @if ($product->productLikes->contains('user_id', auth()->id()))
+                                <img
+                                    src="{{ asset('images/heart-logo-pink.png') }}"
+                                    alt="heart-logo-pink"
+                                    class="item__likes-icon"
+                                >
+                            @else
+                                <img
+                                    src="{{ asset('images/heart-logo-default.png') }}"
+                                    alt="heart-logo-default"
+                                    class="item__likes-icon"
+                                >
+                            @endif
+                        </button>
+                    </form>
                     <p class="item__likes-count">{{ $product->productLikes->count() }}</p>
                 </div>
                 <div class="item__comments-area">
@@ -100,7 +91,12 @@
                     <p class="item__comments-count">{{ $product->productComments->count() }}</p>
                 </div>
             </div>
-            <a href="/purchase/{{ $product->id }}" class="item__purchase-link">購入手続きへ</a>
+            @if ($product->is_sold)
+                <span class="item__purchase-link item__purchase-link--disabled">購入手続きへ</span>
+            @else
+                <a href="/purchase/{{ $product->id }}" class="item__purchase-link">購入手続きへ</a>
+            @endif
+
         </div>
 
         {{-- 商品説明ブロック --}}
@@ -152,12 +148,7 @@
                 <p class="comment-form__error-message">{{ $message }}</p>
                 @enderror
 
-                @guest
-                    <button type="button" class="comment-form__btn">コメントを送信する</button>
-                @endguest
-                @auth
-                    <button type="submit" class="comment-form__btn">コメントを送信する</button>
-                @endauth
+                <button type="submit" class="comment-form__btn">コメントを送信する</button>
             </form>
         </div>
     </div>
