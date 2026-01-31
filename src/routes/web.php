@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\ItemController;
+use App\Http\Controllers\PurchaseController;
 use Illuminate\Support\Facades\Route;
 
 // 商品一覧
@@ -19,10 +20,19 @@ Route::get('/email/verify', function () {
     return view('auth.verify-email');
 })->middleware('auth')->name('verification.notice');
 
-// 他画面を作成後に作成する (未認証ユーザーは自動ではじかれるはず)
-// Route::middleware(['auth', 'verified'])->group(function () {
-//     Route::get('/purchase/{item_id}', ...);
-//     Route::get('/sell', ...);
-//     Route::get('/mypage', ...);
-//     Route::get('/mypage/profile', ...);
-// });
+// 商品購入
+Route::middleware(['auth', 'verified'])->group(function () {
+    Route::get('/purchase/{item_id}', [PurchaseController::class, 'showPurchasePage']);
+    Route::get('/purchase/address/{item_id}', [PurchaseController::class, 'showAddressEditPage']);
+    Route::post('/purchase/payment/{item_id}', [PurchaseController::class, 'storePaymentMethodSelection']);
+    Route::post('/purchase/{item_id}', [PurchaseController::class, 'purchase']);
+    Route::post('/purchase/address/{item_id}', [PurchaseController::class, 'updateAddress']);
+    Route::get('/purchase/success/{item_id}', [PurchaseController::class, 'handleStripeSuccess']);
+
+    // Route::get('/sell', ...);
+    // Route::get('/mypage', ...);
+    // Route::get('/mypage/profile', ...);
+});
+
+// Stripe Webhook用のルート
+Route::post('/stripe/webhook', [PurchaseController::class, 'handleStripeWebhook']);

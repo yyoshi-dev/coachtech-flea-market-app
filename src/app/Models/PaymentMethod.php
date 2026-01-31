@@ -7,7 +7,8 @@ use Illuminate\Database\Eloquent\Model;
 class PaymentMethod extends Model
 {
     protected $fillable = [
-        'name'
+        'name',
+        'stripe_type'
     ];
 
     // ordersテーブルとのリレーション

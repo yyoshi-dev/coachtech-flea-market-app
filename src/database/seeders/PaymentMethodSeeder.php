@@ -13,8 +13,8 @@ class PaymentMethodSeeder extends Seeder
     public function run(): void
     {
         DB::table('payment_methods')->insert([
-            ['id' => 1, 'name' => 'コンビニ支払い'],
-            ['id' => 2, 'name' => 'カード支払い'],
+            ['id' => 1, 'name' => 'コンビニ支払い', 'stripe_type' => 'konbini'],
+            ['id' => 2, 'name' => 'カード支払い', 'stripe_type' => 'card'],
         ]);
     }
 }
