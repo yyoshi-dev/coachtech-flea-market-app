@@ -91,7 +91,12 @@
                     <p class="item__comments-count">{{ $product->productComments->count() }}</p>
                 </div>
             </div>
-            <a href="/purchase/{{ $product->id }}" class="item__purchase-link">購入手続きへ</a>
+            @if ($product->is_sold)
+                <span class="item__purchase-link item__purchase-link--disabled">購入手続きへ</span>
+            @else
+                <a href="/purchase/{{ $product->id }}" class="item__purchase-link">購入手続きへ</a>
+            @endif
+
         </div>
 
         {{-- 商品説明ブロック --}}
