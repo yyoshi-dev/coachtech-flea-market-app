@@ -31,8 +31,9 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/purchase/success/{item_id}', [PurchaseController::class, 'handleStripeSuccess']);
 
 
-    Route::get('/mypage', [ProfileController::class, 'show']);
-    // Route::get('/mypage/profile', ...);
+    Route::get('/mypage', [ProfileController::class, 'showProfilePage']);
+    Route::get('/mypage/profile', [ProfileController::class, 'showProfileEditPage']);
+    Route::post('/mypage/profile', [ProfileController::class, 'editProfile']);
     // Route::get('/sell', ...);
 });
 
