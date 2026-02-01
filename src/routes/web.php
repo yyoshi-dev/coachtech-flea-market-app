@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\ItemController;
+use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\PurchaseController;
 use Illuminate\Support\Facades\Route;
 
@@ -29,9 +30,10 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::post('/purchase/address/{item_id}', [PurchaseController::class, 'updateAddress']);
     Route::get('/purchase/success/{item_id}', [PurchaseController::class, 'handleStripeSuccess']);
 
-    // Route::get('/sell', ...);
-    // Route::get('/mypage', ...);
+
+    Route::get('/mypage', [ProfileController::class, 'show']);
     // Route::get('/mypage/profile', ...);
+    // Route::get('/sell', ...);
 });
 
 // Stripe Webhook用のルート
