@@ -41,7 +41,7 @@
                     class="profile__image"
                 >
             @else
-                <div class="profile__image--placeholder"></div>
+                <div class="profile__image-placeholder"></div>
             @endif
             <span class="user__name">{{ $user->name }}</span>
         </div>
