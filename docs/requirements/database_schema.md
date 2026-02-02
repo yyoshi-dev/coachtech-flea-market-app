@@ -3,19 +3,20 @@
 ## テーブル仕様
 
 ### 1. usersテーブル
-| カラム名           | 型              | PRIMARY KEY | UNIQUE KEY | NOT NULL | FOREIGN KEY |
-| ------------------ | --------------- | ----------- | ---------- | -------- | ----------- |
-| id                 | unsigned bigint | ○           |            | ○        |             |
-| name               | varchar(255)    |             |            | ○        |             |
-| email              | varchar(255)    |             | ○          | ○        |             |
-| password           | varchar(255)    |             |            | ○        |             |
-| postal_code        | varchar(8)      |             |            |          |             |
-| address            | varchar(255)    |             |            |          |             |
-| building           | varchar(255)    |             |            |          |             |
-| profile_image_path | varchar(255)    |             |            |          |             |
-| email_verified_at  | timestamp       |             |            |          |             |
-| created_at         | timestamp       |             |            |          |             |
-| updated_at         | timestamp       |             |            |          |             |
+| カラム名             | 型              | PRIMARY KEY | UNIQUE KEY | NOT NULL | FOREIGN KEY |
+| -------------------- | --------------- | ----------- | ---------- | -------- | ----------- |
+| id                   | unsigned bigint | ○           |            | ○        |             |
+| name                 | varchar(255)    |             |            | ○        |             |
+| email                | varchar(255)    |             | ○          | ○        |             |
+| password             | varchar(255)    |             |            | ○        |             |
+| postal_code          | varchar(8)      |             |            |          |             |
+| address              | varchar(255)    |             |            |          |             |
+| building             | varchar(255)    |             |            |          |             |
+| profile_image_path   | varchar(255)    |             |            |          |             |
+| email_verified_at    | timestamp       |             |            |          |             |
+| profile_completed_at | timestamp       |             |            |          |             |
+| created_at           | timestamp       |             |            |          |             |
+| updated_at           | timestamp       |             |            |          |             |
 
 ### 2. productsテーブル
 | カラム名             | 型              | PRIMARY KEY | UNIQUE KEY | NOT NULL | FOREIGN KEY            |
