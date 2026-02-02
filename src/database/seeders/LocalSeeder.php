@@ -28,9 +28,6 @@ class LocalSeeder extends Seeder
             'name' => '初回ログインユーザー',
             'email' => 'test-login@example.com',
             'password' => Hash::make('test1234'),
-            'postal_code' => '123-4567',
-            'address' => 'テスト県テスト市 1-2-3',
-            'building' => 'テストマンション201',
             'email_verified_at' => now(),
         ]);
     }
