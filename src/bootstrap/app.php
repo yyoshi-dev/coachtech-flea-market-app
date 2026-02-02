@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Middleware\CheckProfileCompleted;
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
@@ -14,6 +15,10 @@ return Application::configure(basePath: dirname(__DIR__))
         // CSRF対策から特定のパスを除外
         $middleware->validateCsrfTokens(except: [
             'stripe/webhook',
+        ]);
+
+        $middleware->alias([
+            'profile.completed' => CheckProfileCompleted::class
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions): void {
