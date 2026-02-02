@@ -46,6 +46,7 @@ class User extends Authenticatable implements MustVerifyEmail
     {
         return [
             'email_verified_at' => 'datetime',
+            'profile_completed_at' => 'datetime',
             'password' => 'hashed',
         ];
     }
@@ -69,5 +70,11 @@ class User extends Authenticatable implements MustVerifyEmail
     public function productComments()
     {
         return $this->hasMany(ProductComment::class);
+    }
+
+    // is_profile_completedの計算
+    public function getIsProfileCompletedAttribute(): bool
+    {
+        return !is_null($this->profile_completed_at);
     }
 }
