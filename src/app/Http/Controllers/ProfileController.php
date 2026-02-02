@@ -77,6 +77,11 @@ class ProfileController extends Controller
             'building',
         ]));
 
+        // 初回ログイン時のプロフィール設定の場合timestampをセット
+        if (!$user->is_profile_completed) {
+            $user->profile_completed_at = now();
+        }
+
         $user->save();
 
         // 初回プロフィール設定時の遷移先は"/"だが、通常のプロフィール設定後の遷移先は不明なので確認中
