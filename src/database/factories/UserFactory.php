@@ -38,6 +38,7 @@ class UserFactory extends Factory
             'address' => $this->faker->prefecture() . ' ' . $this->faker->city() . ' ' . $this->faker->streetAddress(),
             'building' => $this->faker->secondaryAddress(),
             'email_verified_at' => now(),
+            'profile_completed_at' => now(),
         ];
     }
 

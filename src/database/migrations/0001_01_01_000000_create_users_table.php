@@ -21,6 +21,7 @@ return new class extends Migration
             $table->string('building', 255)->nullable();
             $table->string('profile_image_path', 255)->nullable();
             $table->timestamp('email_verified_at')->nullable();
+            $table->timestamp('profile_completed_at')->nullable();
             $table->timestamps();
         });
 

@@ -14,12 +14,23 @@ class LocalSeeder extends Seeder
     public function run(): void
     {
         User::create([
-            'name' => '検証ユーザー',
+            'name' => '通常ログインユーザー',
             'email' => 'test@example.com',
             'password' => Hash::make('test1234'),
             'postal_code' => '123-4567',
             'address' => 'テスト県テスト市 1-2-3',
             'building' => 'テストマンション101',
+            'email_verified_at' => now(),
+            'profile_completed_at' => now(),
+        ]);
+
+        User::create([
+            'name' => '初回ログインユーザー',
+            'email' => 'test-login@example.com',
+            'password' => Hash::make('test1234'),
+            'postal_code' => '123-4567',
+            'address' => 'テスト県テスト市 1-2-3',
+            'building' => 'テストマンション201',
             'email_verified_at' => now(),
         ]);
     }
