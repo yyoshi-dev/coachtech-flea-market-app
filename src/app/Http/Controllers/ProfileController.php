@@ -56,6 +56,9 @@ class ProfileController extends Controller
         /** @var User $user */
         $user = Auth::user();
 
+        // 変更前の状態を保持 (初回かどうかの判定に使用)
+        $wasProfileCompleted = $user->is_profile_completed;
+
         // 画像のアップロード処理
         if ($request->hasFile('profile_image')) {
 
@@ -84,8 +87,11 @@ class ProfileController extends Controller
 
         $user->save();
 
-        // 初回プロフィール設定時の遷移先は"/"だが、通常のプロフィール設定後の遷移先は不明なので確認中
-        // 普通マイページからプロフィールを編集するとマイページに戻る気もするので一旦mypageで仮置き
+        // 初回プロフィール設定後は、商品一覧に遷移させ、以降のプロフィール編集ではマイページに遷移
+        if (!$wasProfileCompleted && $user->is_profile_completed) {
+            return redirect('/?tab=mylist');
+        }
+
         return redirect('/mypage');
     }
 }

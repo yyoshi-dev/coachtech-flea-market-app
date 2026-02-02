@@ -21,6 +21,9 @@ use App\Responses\Fortify\RegisterResponse as CustomRegisterResponse;
 use Laravel\Fortify\Contracts\VerifyEmailResponse as FortifyVerifyEmailResponse;
 use App\Responses\Fortify\VerifyEmailResponse as CustomVerifyEmailResponse;
 
+use Laravel\Fortify\Contracts\LoginResponse as FortifyLoginResponse;
+use App\Responses\Fortify\LoginResponse as CustomLoginResponse;
+
 use Laravel\Fortify\Contracts\LogoutResponse as FortifyLogoutResponse;
 use App\Responses\Fortify\LogoutResponse as CustomLogoutResponse;
 
@@ -39,6 +42,9 @@ class FortifyServiceProvider extends ServiceProvider
 
         // メール認証後のリダイレクト先を置き換え
         $this->app->bind(FortifyVerifyEmailResponse::class, CustomVerifyEmailResponse::class);
+
+        // 初回ログイン時のリダイレクト先を設定
+        $this->app->bind(FortifyLoginResponse::class, CustomLoginResponse::class);
 
         // Logout処理時に"/login"にリダイレクトする設定に置き換え
         $this->app->bind(FortifyLogoutResponse::class, CustomLogoutResponse::class);
