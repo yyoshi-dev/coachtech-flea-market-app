@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\ExhibitionController;
 use App\Http\Controllers\ItemController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\PurchaseController;
@@ -27,7 +28,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::post('/mypage/profile', [ProfileController::class, 'editProfile']);
 });
 
-// 商品購入
+// 認証の完了が必須のルート
 Route::middleware(['auth', 'verified', 'profile.completed'])->group(function () {
     Route::get('/purchase/{item_id}', [PurchaseController::class, 'showPurchasePage']);
     Route::get('/purchase/address/{item_id}', [PurchaseController::class, 'showAddressEditPage']);
@@ -37,7 +38,8 @@ Route::middleware(['auth', 'verified', 'profile.completed'])->group(function () 
     Route::get('/purchase/success/{item_id}', [PurchaseController::class, 'handleStripeSuccess']);
 
     Route::get('/mypage', [ProfileController::class, 'showProfilePage']);
-    // Route::get('/sell', ...);
+    Route::get('/sell', [ExhibitionController::class, 'create']);
+    Route::post('/sell', [ExhibitionController::class, 'store']);
 });
 
 // Stripe Webhook用のルート
