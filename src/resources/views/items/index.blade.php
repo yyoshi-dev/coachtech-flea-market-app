@@ -20,7 +20,7 @@
 @endsection
 
 {{-- ヘッダーのリンク部分 --}}
-@section('header-link')
+@section('header-nav')
 {{-- 未認証時の表示内容 --}}
 @guest
     <a href="/login" class="login-link">ログイン</a>

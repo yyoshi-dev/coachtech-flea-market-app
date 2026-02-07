@@ -20,7 +20,7 @@
 @endsection
 
 {{-- ヘッダーのリンク部分 --}}
-@section('header-link')
+@section('header-nav')
 <form action="/logout" method="post" class="logout-form">
     @csrf
     <button type="submit" class="logout-form__button">ログアウト</button>

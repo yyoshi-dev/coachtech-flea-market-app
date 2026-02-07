@@ -2,7 +2,7 @@
 
 {{-- CSS --}}
 @section('css')
-<link rel="stylesheet" href="{{ asset('css/items.css') }}">
+<link rel="stylesheet" href="{{ asset('css/item-detail.css') }}">
 @endsection
 
 {{-- ヘッダーの検索フォーム部分 --}}
@@ -20,7 +20,7 @@
 @endsection
 
 {{-- ヘッダーのリンク部分 --}}
-@section('header-link')
+@section('header-nav')
 {{-- 未認証時の表示内容 --}}
 @guest
     <a href="/login" class="login-link">ログイン</a>
