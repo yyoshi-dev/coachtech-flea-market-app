@@ -37,7 +37,7 @@ class ProductSeeder extends Seeder
             ],
             [
                 'id' => 3,
-                'user_id' => 2,
+                'user_id' => 1,
                 'name' => '玉ねぎ3束',
                 'brand_name' => 'なし',
                 'description' => '新鮮な玉ねぎ3束のセット',
@@ -47,7 +47,7 @@ class ProductSeeder extends Seeder
             ],
             [
                 'id' => 4,
-                'user_id' => 2,
+                'user_id' => 3,
                 'name' => '革靴',
                 'brand_name' => '',
                 'description' => 'クラシックなデザインの革靴',
@@ -57,7 +57,7 @@ class ProductSeeder extends Seeder
             ],
             [
                 'id' => 5,
-                'user_id' => 2,
+                'user_id' => 3,
                 'name' => 'ノートPC',
                 'brand_name' => '',
                 'description' => '高性能なノートパソコン',
@@ -87,7 +87,7 @@ class ProductSeeder extends Seeder
             ],
             [
                 'id' => 8,
-                'user_id' => 3,
+                'user_id' => 4,
                 'name' => 'タンブラー',
                 'brand_name' => 'なし',
                 'description' => '使いやすいタンブラー',

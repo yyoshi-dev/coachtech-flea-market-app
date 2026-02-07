@@ -32,5 +32,11 @@ class DatabaseSeeder extends Seeder
 
         // product_category_relationsのダミーデータの作成
         $this->call(ProductCategoryRelationSeeder::class);
+
+        // product_likesのダミーデータの作成
+        $this->call(ProductLikeSeeder::class);
+
+        // ordersのダミーデータの作成
+        $this->call(OrderSeeder::class);
     }
 }
