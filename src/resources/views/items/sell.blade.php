@@ -137,8 +137,7 @@
                         cols="30"
                         rows="10"
                         class="exhibition-form__textarea"
-                    >{{ old('description') }}
-                    </textarea>
+                    >{{ old('description') }}</textarea>
                     @error('description')
                     <p class="exhibition-form__error-message">{{ $message }}</p>
                     @enderror
