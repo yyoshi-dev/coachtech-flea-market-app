@@ -30,7 +30,7 @@
 @endsection
 
 @section('content')
-<div class="profile-content">
+<div class="mypage-content">
     {{-- ユーザー情報 --}}
     <div class="user-profile">
         <div class="user-info">
