@@ -38,7 +38,7 @@ class ProfileController extends Controller
             $page = 'sell';
         }
 
-        return view('mypage.profile', compact('products', 'user', 'page'));
+        return view('mypage.mypage', compact('products', 'user', 'page'));
     }
 
     // プロフィール編集画面の表示
