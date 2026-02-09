@@ -40,7 +40,9 @@
     border-radius: 4px;
     width: 100%;
     padding: 15px 10px;
-    font-size: 20px;
+    font-size: 24px;
+    font-weight: bold;
+    color: #5f5f5f;
 }
 
 .auth-form__error-message {
