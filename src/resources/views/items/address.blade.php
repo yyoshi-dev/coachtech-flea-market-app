@@ -2,7 +2,7 @@
 
 {{-- CSS --}}
 @section('css')
-<link rel="stylesheet" href="{{ asset('css/purchase.css') }}">
+<link rel="stylesheet" href="{{ asset('css/address.css') }}">
 @endsection
 
 {{-- ヘッダーの検索フォーム部分 --}}
@@ -33,7 +33,7 @@
 @section('content')
 <div class="address-content">
     <div class="address-form">
-        <h2 class="address-form__heading content__heading">住所の変更</h2>
+        <h2 class="address-form__heading">住所の変更</h2>
 
         <div class="address-form__inner">
             <form action="/purchase/address/{{ $item_id }}" method="post" class="address-form__form">
