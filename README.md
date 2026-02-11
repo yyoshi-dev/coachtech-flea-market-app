@@ -74,10 +74,59 @@
 
 9.  シーディングを実行
     ```bash
+    php artisan db:seed --class=LocalTestSeeder
+    ```
+    上記は検証用データを作成する処理であり、検証用のユーザーも同時に作成される
+    検証用のユーザーが不要な場合は、以下を実行すればよい
+     ```bash
     php artisan db:seed
     ```
 
 ---
+
+## テストの準備
+
+### 検証用ユーザー
+- シーディングの実行において、以下を実行した場合は、検証用ユーザーを作成している
+    ```bash
+    php artisan db:seed --class=LocalTestSeeder
+    ```
+- 検証用ユーザー
+  - 取引有ユーザー
+    - 概要: 商品出品や商品購入の実績があるユーザーであり、認証は完了済み
+    - メールアドレス: `test1@example.com`
+    - パスワード: `test1234`
+  - 未取引ユーザー
+    - 概要: 商品出品や商品購入の実績がないユーザーであり、認証は完了済み
+    - メールアドレス: `test2@example.com`
+    - パスワード: `test1234`
+
+### stripeのテスト
+
+#### stripeのセットアップ
+1. StripeのAPI情報を`.env`ファイルに設定
+    ```ini
+    STRIPE_SECRET=sk_test_********
+    STRIPE_PUBLIC=pk_test_********
+    ```
+    ※ Laravel環境構築にて既に`.env`ファイルが作成されている前提
+
+#### stripeの処理について
+- **カード支払い:** 「購入する」ボタンを押すと、Stripe決済画面に遷移し、決済を完了する事で、購入処理が完了する
+- **コンビニ支払い:** 「購入する」ボタンを押した時点で、購入処理が完了する
+
+#### stripeテストの情報
+stripeのテストは以下情報を用いて実施する
+- カード支払い (成功)
+  - メールアドレス: 任意
+  - カード番号: `4242 4242 4242 4242`
+  - 有効期限: 未来の日付
+  - CVC: 任意の3桁
+  - 名前: 任意
+
+**※ コンビニ支払いに関しては、「購入する」ボタンを押した時点で購入処理が完了し、商品一覧画面に遷移するようになっており、stripeの決済処理は行われない為、stripe決済処理をテストする場合は、カード支払いを選択してください**
+**※ コンビニ支払いでは、stripe側に決済情報は送信されません**
+
 
 ## 使用技術 (実行環境)
 - PHP：8.4.16
@@ -104,70 +153,3 @@
 - ログイン画面: http://localhost/login
 - phpMyAdmin: http://localhost:8080/
 - mailhog: http://localhost:8025/
-
-## テスト
-
-### stripeテストの準備
-
-#### stripeのセットアップ
-1. 開発者から共有されたAPIを`.env`ファイルに設定
-    ```ini
-    STRIPE_SECRET=sk_test_********
-    STRIPE_PUBLIC=pk_test_********
-    ```
-    ※ Laravel環境構築にて既に`.env`ファイルが作成されている前提
-
-#### Webhookのセットアップ
-##### ngrokのセットアップ
-1. [ngrokの公式サイト](https://ngrok.com)にアクセスしてngrokのアカウントを作成 (未実施の場合)
-2. ngrokをインストール (未実施の場合)
-    - インストール方法は、[ngrokログイン後のSetup & Installation](https://dashboard.ngrok.com/get-started/setup)に記載
-
-3. ngrokのシークレットキー (Authtoken)を発行
-4. ngrokにシークレットキーを設定
-    ```bash
-    ngrok config add-authtoken <Authtoken>
-    ```
-
-5. ngrokでローカルサーバーを公開
-    ```bash
-    ngrok http 80
-    ```
-    ※ 表示される`https://xxxxx.ngrok-free.dev`は後述のstripe設定で使用
-    ※ ngrokを起動する度にURLが変わる為、stripe側の設定も毎回更新が必要
-
-##### stripeのセットアップ
-1. [stripe dashboard](https://dashboard.stripe.com/)にアクセス
-2. stripe dashboardのWebhook設定ページを開く
-    - UIはバージョンにより異なる為、適宜読み替える事
-    - 検索欄で「Webhook」と入力・検索すると見つけ易い
-
-3. 「送信先を追加する」からWebhookエンドポイントを登録
-    - イベントのリッスン元: お客様のアカウント
-    - APIバージョン: 最新版でよい
-    - イベント: `payment_intent.succeeded`にチェック (今回は決済完了時のみを対象)
-    - 送信先のタイプは: Webhookエンドポイント
-    - 送信先の設定画面: エンドポイントURLに、`https://xxxxx.ngrok-free.dev/stripe/webhook`を設定 (`https://xxxxx.ngrok-free.dev`には、ngrok起動時に表示されたURLを指定)
-    - 「送信先を作成する」を実行
-
-4.  Webhookエンドポイント作成後、画面右側に表示される署名シークレットを`.env`ファイルに設定
-    ```ini
-    STRIPE_WEBHOOK_SECRET=whsec_XXXXX
-    ```
-**※ ngrokのURLが変わった場合は、stripe dashboardのエンドポイントURLを更新する必要有 (新規作成でない限り、署名シークレットは変更されない)**
-
-#### stripeテストの情報
-stripeのテストは以下情報を用いて実施する
-- カード支払い (成功)
-  - メールアドレス: 任意
-  - カード番号: `4242 4242 4242 4242`
-  - 有効期限: 未来の日付
-  - CVC: 任意の3桁
-  - 名前: 任意
-- コンビニ支払い (成功)
-  - メールアドレス: 任意
-  - 名前: 任意
-  - 電話番号: 任意
-  - コンビニ選択: 任意
-
-**※ テスト環境のコンビニ決済は自動で成功となるが、反映までに数分かかる為、stripe dashboard上で、該当取引のステータスが「成功」になってから、アプリ側の処理が正しく動作しているかを確認する事**
