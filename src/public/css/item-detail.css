@@ -1,0 +1,251 @@
+.item-detail-content {
+    width: 100%;
+    display: flex;
+    padding: 40px 70px;
+}
+
+.item__image-area,
+.item__description-area {
+    flex: 1;
+}
+
+.item__description-area {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.item__image {
+    width: 600px;
+    aspect-ratio: 1 / 1;
+    object-fit: cover;
+    border-radius: 4px;
+    padding-top: 50px;
+}
+
+.item__title-block,
+.item__description-block,
+.item__info-block,
+.item__comment-block {
+    width: 80%;
+}
+
+.item__title {
+    color: #000000;
+    font-size: 45px;
+    font-weight: bold;
+    margin: 0;
+}
+
+.item__brand {
+    color: #000000;
+    font-size: 20px;
+    margin: 0;
+    padding-bottom: 10px;
+}
+
+.item__price {
+    color: #000000;
+    font-size: 45px;
+    margin: 0;
+}
+
+.item__price-currency {
+    font-size: 0.7em;
+}
+
+.item__price-tax {
+    font-size: 0.7em;
+}
+
+.item__action-area {
+    display: flex;
+    align-items: center;
+    padding: 10px 45px;
+    gap: 40px;
+}
+
+.item__likes-area,
+.item__comments-area {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.like-form__btn {
+    text-decoration: none;
+    background: none;
+    border: none;
+    cursor: pointer;
+}
+
+.item__likes-icon,
+.item__comments-icon {
+    width: 40px;
+    aspect-ratio: 1 / 1;
+}
+
+.item__likes-count,
+.item__comments-count {
+    margin: 0;
+    font-size: 18px;
+    font-weight: bold;
+}
+
+.item__purchase-area {
+    width: 100%;
+    padding: 10px 0;
+}
+
+.item__purchase-link {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 56px;
+    text-decoration: none;
+    text-align: center;
+    font-size: 30px;
+    font-weight: bold;
+    border-radius: 4px;
+    cursor: pointer;
+    color: #ffffff;
+    background-color: #ff5555;
+}
+
+.item__purchase-link--disabled {
+    background-color: #ccc;
+    cursor: not-allowed;
+}
+
+.item__description-title,
+.item__info-title,
+.item__comment-title {
+    font-size: 36px;
+    font-weight: bold;
+    margin: 30px 0 10px 0;
+}
+
+.item__description-title,
+.item__info-title {
+    color: #000000;
+}
+
+.item__comment-title {
+    color: #5f5f5f;
+}
+
+.item__description-text {
+    color: #000000;
+    font-size: 24px;
+    white-space: pre-wrap;
+    overflow-wrap: break-word;
+    line-height: 1.6;
+}
+
+.item__category,
+.item__condition {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    padding: 10px 0;
+}
+
+.item__category-title,
+.item__condition-title {
+    font-size: 24px;
+    font-weight: bold;
+    color: #000000;
+    padding-right: 20px;
+}
+
+.item__category-text,
+.item__condition-text {
+    font-size: 20px;
+    color: #000000;
+    padding: 5px 15px;
+    margin: 0;
+}
+
+.item__category-text {
+    background-color: #d9d9d9;
+    border-radius: 15px;
+}
+
+.item__comment-user {
+    display: flex;
+    align-items: center;
+}
+
+.item__comment-user--mark {
+    display: inline-block;
+    width: 70px;
+    height: 70px;
+    background-color: #d9d9d9;
+    border-radius: 50%;
+    margin-right: 20px;
+    vertical-align: middle;
+}
+
+.item__comment-user--name {
+    color: #000000;
+    font-size: 30px;
+    font-weight: bold;
+}
+
+.item__comment-text {
+    color: #000000;
+    background-color: #e5e5e5;
+    font-size: 20px;
+    font-weight: lighter;
+    white-space: pre-wrap;
+    overflow-wrap: break-word;
+    line-height: 1.6;
+    border-radius: 5px;
+    padding: 20px 15px;
+}
+
+.comment-form {
+    display: flex;
+    flex-direction: column;
+}
+
+.comment-form__label {
+    color: #000000;
+    font-size: 28px;
+    font-weight: bold;
+    padding-top: 20px;
+}
+
+.comment-form__textarea {
+    border: 2px solid #5f5f5f;
+    border-radius: 5px;
+    height: 250px;
+    font-size: 16px;
+    padding: 10px;
+    box-sizing: border-box;
+    line-height: 1.6;
+}
+
+.comment-form__error-message {
+    color: #ff5555;
+    font-size: 20px;
+}
+
+.comment-form__btn {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 56px;
+    text-decoration: none;
+    text-align: center;
+    font-size: 25px;
+    font-weight: bold;
+    border-radius: 4px;
+    border: none;
+    cursor: pointer;
+    color: #ffffff;
+    background-color: #ff5555;
+    margin-top: 30px;
+}

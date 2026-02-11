@@ -2,7 +2,7 @@
 
 {{-- CSS --}}
 @section('css')
-<link rel="stylesheet" href="{{ asset('css/mypage.css') }}">
+<link rel="stylesheet" href="{{ asset('css/profile.css') }}">
 @endsection
 
 {{-- ヘッダーの検索フォーム部分 --}}
@@ -20,7 +20,7 @@
 @endsection
 
 {{-- ヘッダーのリンク部分 --}}
-@section('header-link')
+@section('header-nav')
 <form action="/logout" method="post" class="logout-form">
     @csrf
     <button type="submit" class="logout-form__button">ログアウト</button>
@@ -32,7 +32,7 @@
 @section('content')
 <div class="profile-edit-content">
     <div class="profile-form">
-        <h2 class="profile-form__heading content__heading">プロフィール設定</h2>
+        <h2 class="profile-form__heading">プロフィール設定</h2>
 
         <div class="profile-form__inner">
             <form action="/mypage/profile" method="post" enctype="multipart/form-data" class="profile-form__form">
@@ -49,15 +49,16 @@
                         @else
                             <div class="profile-form__image-placeholder"></div>
                         @endif
+                        <label for="profile_image" class="profile-form__image-button">画像を選択する</label>
+                        <input
+                            type="file"
+                            name="profile_image"
+                            id="profile_image"
+                            accept=".jpeg,.png"
+                            class="profile-form__image-input"
+                        >
                     </div>
-                    <label for="profile_image" class="profile-form__image-button">画像を選択する</label>
-                    <input
-                        type="file"
-                        name="profile_image"
-                        id="profile_image"
-                        accept=".jpeg,.png"
-                        class="profile-form__image-input"
-                    >
+
                     @error('profile_image')
                     <p class="profile-form__error-message">{{ $message }}</p>
                     @enderror
@@ -117,7 +118,7 @@
                 </div>
 
                 <div>
-                    <input type="submit" value="更新する" class="profile-form__btn btn">
+                    <input type="submit" value="更新する" class="profile-form__btn">
                 </div>
             </form>
         </div>

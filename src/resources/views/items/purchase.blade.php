@@ -20,7 +20,7 @@
 @endsection
 
 {{-- ヘッダーのリンク部分 --}}
-@section('header-link')
+@section('header-nav')
 <form action="/logout" method="post" class="logout-form">
     @csrf
     <button type="submit" class="logout-form__button">ログアウト</button>
@@ -53,21 +53,22 @@
             <form action="/purchase/payment/{{ $product->id }}" method="post" class="payment-methods__form">
                 @csrf
                 <label for="payment_method_id" class="payment-methods__title">支払い方法</label>
-                <select
-                    name="payment_method_id"
-                    id="payment_method_id"
-                    class="payment-methods__select"
-                    onchange="this.form.submit()"
-                >
-                    <option disabled {{ !$selectedPaymentMethod ? 'selected' : '' }}>選択してください</option>
-                    @foreach ($paymentMethods as $paymentMethod)
-                        <option value="{{ $paymentMethod->id }}"
-                            {{ $selectedPaymentMethod && $selectedPaymentMethod->id == $paymentMethod->id ? 'selected' : '' }}>
-                            {{ $selectedPaymentMethod && $selectedPaymentMethod->id == $paymentMethod->id ? '✓' : '' }}
-                            {{ $paymentMethod->name }}
-                        </option>
-                    @endforeach
-                </select>
+                <div class="payment-methods__select-inner">
+                    <select
+                        name="payment_method_id"
+                        id="payment_method_id"
+                        class="payment-methods__select"
+                        onchange="this.form.submit()"
+                    >
+                        <option disabled selected>選択してください</option>
+                        @foreach ($paymentMethods as $paymentMethod)
+                            <option value="{{ $paymentMethod->id }}"
+                                {{ $selectedPaymentMethod && $selectedPaymentMethod->id == $paymentMethod->id ? 'selected' : '' }}>
+                                {{ $paymentMethod->name }}
+                            </option>
+                        @endforeach
+                    </select>
+                </div>
             </form>
         </div>
 
@@ -80,7 +81,7 @@
                 </a>
             </div>
             <div class="delivery-address__content">
-                <span class="delivery-address__text">{{ $address['postal_code'] }}</span>
+                <span class="delivery-address__text">〒 {{ $address['postal_code'] }}</span>
                 <span class="delivery-address__text">{{ $address['address'] }}</span>
                 <span class="delivery-address__text">{{ $address['building'] }}</span>
             </div>
@@ -95,7 +96,7 @@
                 <table class="purchase-summary__table">
                     <tr class="purchase-summary__row">
                         <th class="purchase-summary__header">商品代金</th>
-                        <td class="purchase-summary__text">{{ number_format($product->price) }}</td>
+                        <td class="purchase-summary__text">\{{ number_format($product->price) }}</td>
                     </tr>
                     <tr class="purchase-summary__row">
                         <th class="purchase-summary__header">支払い方法</th>

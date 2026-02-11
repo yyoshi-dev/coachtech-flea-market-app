@@ -9,6 +9,7 @@
     <link rel="stylesheet" href="{{ asset('css/sanitize.css') }}">
     <link rel="stylesheet" href="{{ asset('css/base.css') }}">
     <link rel="stylesheet" href="{{ asset('css/layout.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/components.css') }}">
     @yield('css')
 </head>
 
@@ -18,8 +19,12 @@
             <a href="/" class="header__logo">
                 <img src="{{ asset('images/coachtech-header-logo.png') }}" alt="COACHTECH">
             </a>
-            @yield('header-search')
-            @yield('header-link')
+            <div class="header__search">
+                @yield('header-search')
+            </div>
+            <div class="header__nav">
+                @yield('header-nav')
+            </div>
         </header>
         <main class="content">
             @yield('content')

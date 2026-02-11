@@ -11,9 +11,9 @@
         メール認証を完了してください。
     </span>
 
-    <div class="verification-content__link">
-        <a href="http://localhost:8025/">認証はこちらから</a>
-    </div>
+    <a href="http://localhost:8025/" class="verification-content__link">
+        認証はこちらから
+    </a>
 
     <form action="{{ route('verification.send') }}" method="post" class="verification-form">
         @csrf

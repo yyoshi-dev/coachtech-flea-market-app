@@ -2,7 +2,7 @@
 
 {{-- CSS --}}
 @section('css')
-<link rel="stylesheet" href="{{ asset('css/items.css') }}">
+<link rel="stylesheet" href="{{ asset('css/item-detail.css') }}">
 @endsection
 
 {{-- ヘッダーの検索フォーム部分 --}}
@@ -20,7 +20,7 @@
 @endsection
 
 {{-- ヘッダーのリンク部分 --}}
-@section('header-link')
+@section('header-nav')
 {{-- 未認証時の表示内容 --}}
 @guest
     <a href="/login" class="login-link">ログイン</a>
@@ -47,9 +47,6 @@
             alt="{{ $product->name }}"
             class="item__image"
         >
-        @if ($product->is_sold)
-            <span class="item__sold-label">Sold</span>
-        @endif
     </div>
 
     {{-- 商品説明 --}}
@@ -58,7 +55,10 @@
         <div class="item__title-block">
             <h2 class="item__title">{{ $product->name }}</h2>
             <p class="item__brand">{{ $product->brand_name }}</p>
-            <p class="item__price">\{{ number_format($product->price) }} (税込)</p>
+            <p class="item__price">
+                <span class="item__price-currency">¥</span>{{ number_format($product->price) }}
+                <span class="item__price-tax">(税込)</span>
+            </p>
             <div class="item__action-area">
                 <div class="item__likes-area">
                     {{-- いいね機能 --}}
@@ -91,12 +91,13 @@
                     <p class="item__comments-count">{{ $product->productComments->count() }}</p>
                 </div>
             </div>
-            @if ($product->is_sold)
-                <span class="item__purchase-link item__purchase-link--disabled">購入手続きへ</span>
-            @else
-                <a href="/purchase/{{ $product->id }}" class="item__purchase-link">購入手続きへ</a>
-            @endif
-
+            <div class="item__purchase-area">
+                @if ($product->is_sold)
+                    <span class="item__purchase-link item__purchase-link--disabled">Sold</span>
+                @else
+                    <a href="/purchase/{{ $product->id }}" class="item__purchase-link">購入手続きへ</a>
+                @endif
+            </div>
         </div>
 
         {{-- 商品説明ブロック --}}
@@ -107,6 +108,7 @@
 
         {{-- 商品情報ブロック --}}
         <div class="item__info-block">
+            <h3 class="item__info-title">商品の情報</h3>
             <div class="item__category">
                 <span class="item__category-title">カテゴリー</span>
                 @foreach($product->productCategories as $category)

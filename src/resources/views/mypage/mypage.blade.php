@@ -20,7 +20,7 @@
 @endsection
 
 {{-- ヘッダーのリンク部分 --}}
-@section('header-link')
+@section('header-nav')
 <form action="/logout" method="post" class="logout-form">
     @csrf
     <button type="submit" class="logout-form__button">ログアウト</button>
@@ -30,7 +30,7 @@
 @endsection
 
 @section('content')
-<div class="profile-content">
+<div class="mypage-content">
     {{-- ユーザー情報 --}}
     <div class="user-profile">
         <div class="user-info">
