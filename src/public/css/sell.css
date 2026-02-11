@@ -1,0 +1,229 @@
+.exhibition-content {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.exhibition-form {
+    width: 45%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.exhibition-form__heading {
+    font-size: 36px;
+    font-weight: bold;
+    color: #000000;
+    padding: 40px 0;
+    margin: 0;
+    text-align: center;
+}
+
+.exhibition-form__inner {
+    width: 100%;
+}
+
+.exhibition-form__image-group {
+    display: flex;
+    flex-direction: column;
+    padding-bottom: 40px;
+}
+
+.exhibition-form__image-header {
+    font-size: 24px;
+    font-weight: bold;
+}
+
+.exhibition-form__image-box {
+    width: 100%;
+    padding: 50px 0;
+    border: 1px dotted #5f5f5f;
+    border-radius: 4px;
+}
+
+.exhibition-form__image-input {
+    display: none;
+}
+
+.exhibition-form__image-button {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 40%;
+    max-width: 180px;
+    min-width: 140px;
+    margin: 0 auto;
+    padding: 0 25px;
+    height: 44px;
+    text-decoration: none;
+    text-align: center;
+    font-size: 16px;
+    font-weight: bold;
+    border-radius: 10px;
+    border: 2px solid #ff5555;
+    cursor: pointer;
+    color: #ff5555;
+    background-color: #ffffff;
+}
+
+.exhibition-form__error-message {
+    color: #ff5555;
+    font-size: 16px;
+}
+
+.exhibition-form__sub-heading {
+    font-size: 30px;
+    font-weight: bold;
+    color: #5f5f5f;
+    border-bottom: 1px solid #5f5f5f;
+    margin: 30px 0;
+    padding-bottom: 5px;
+}
+
+.exhibition-form__group {
+    display: flex;
+    flex-direction: column;
+    padding-bottom: 40px;
+}
+
+.exhibition-form__label {
+    font-size: 24px;
+    font-weight: bold;
+    padding-bottom: 5px;
+}
+
+.exhibition-form__checkbox-group {
+    display: flex;
+    flex-wrap: wrap;
+    row-gap: 30px;
+    column-gap: 20px;
+}
+
+.exhibition-form__checkbox-label input[type="checkbox"] {
+    display: none;
+}
+
+.exhibition-form__checkbox-label {
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    padding: 3px 15px;
+    text-decoration: none;
+    font-size: 15px;
+    font-weight: 500;
+    border-radius: 200px;
+    border: 2px solid #ff5655;
+    cursor: pointer;
+    color: #ff5555;
+    background-color: #ffffff;
+}
+
+.exhibition-form__checkbox-label:has(input:checked) {
+    background-color: #ff5555;
+    color: #ffffff;
+}
+
+.exhibition-form__select-inner {
+    position: relative;
+}
+
+.exhibition-form__select-inner::after {
+    position: absolute;
+    top: 50%;
+    left: auto;
+    right: 20px;
+    width: 0;
+    height: 0;
+    border-top: 20px solid #5f5f5f;
+    border-right: 10px solid transparent;
+    border-left: 10px solid transparent;
+    content: "";
+    transform: translateY(-50%);
+    pointer-events: none;
+}
+
+.exhibition-form__select {
+    width: 100%;
+    padding: 15px 10px;
+    color: #5f5f5f;
+    font-size: 20px;
+    font-weight: bold;
+    border: 1px solid #5f5f5f;
+    border-radius: 4px;
+    appearance: none;
+    cursor: pointer;
+}
+
+.exhibition-form__select option {
+    background-color: #636769;
+    font-size: 18px;
+    font-weight: 600;
+    color: #eaeaea;
+}
+
+.exhibition-form__input {
+    border: 1px solid #5f5f5f;
+    border-radius: 4px;
+    font-size: 20px;
+    font-weight: bold;
+    color: #000000;
+    padding: 15px 10px;
+    box-sizing: border-box;
+}
+
+.exhibition-form__textarea {
+    border: 1px solid #5f5f5f;
+    border-radius: 4px;
+    width: 100%;
+    height: 125px;
+    font-size: 20px;
+    font-weight: bold;
+    color: #000000;
+    padding: 15px 10px;
+    box-sizing: border-box;
+    line-height: 1.2;
+    resize: none;
+    overflow-y: auto;
+}
+
+.exhibition-form__price-wrapper {
+    position: relative;
+    width: 100%;
+}
+
+.exhibition-form__price-wrapper::before {
+    content: "￥";
+    position: absolute;
+    left: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 24px;
+    font-weight: bold;
+    color: #000000;
+    pointer-events: none;
+}
+
+.exhibition-form__input--price {
+    width: 100%;
+    padding-left: 35px;
+}
+
+.exhibition-form__btn {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 60px;
+    text-decoration: none;
+    text-align: center;
+    font-size: 26px;
+    font-weight: bold;
+    border-radius: 5px;
+    border: none;
+    cursor: pointer;
+    color: #ffffff;
+    background-color: #ff5555;
+    margin-top: 50px;
+}

@@ -32,7 +32,7 @@
 @section('content')
 <div class="exhibition-content">
     <div class="exhibition-form">
-        <h2 class="exhibition-form__heading content__heading">商品の出品</h2>
+        <h2 class="exhibition-form__heading">商品の出品</h2>
 
         <div class="exhibition-form__inner">
             <form action="/sell" method="post" enctype="multipart/form-data" class="exhibition-form__form">
@@ -40,14 +40,16 @@
 
                 <div class="exhibition-form__image-group">
                     <span class="exhibition-form__image-header">商品画像</span>
-                    <label for="product_image" class="exhibition-form__image-button">画像を選択する</label>
-                    <input
-                        type="file"
-                        name="product_image"
-                        id="product_image"
-                        accept=".jpeg,.png"
-                        class="exhibition-form__image-input"
-                    >
+                    <div class="exhibition-form__image-box">
+                        <label for="product_image" class="exhibition-form__image-button">画像を選択する</label>
+                        <input
+                            type="file"
+                            name="product_image"
+                            id="product_image"
+                            accept=".jpeg,.png"
+                            class="exhibition-form__image-input"
+                        >
+                    </div>
                     @error('product_image')
                     <p class="exhibition-form__error-message">{{ $message }}</p>
                     @enderror
@@ -78,22 +80,24 @@
 
                 <div class="exhibition-form__group">
                     <label for="product_condition_id" class="exhibition-form__label">商品の状態</label>
-                    <select
-                        name="product_condition_id"
-                        id="product_condition_id"
-                        class="exhibition-form__select"
-                    >
-                        <option value="" disabled {{ old('product_condition_id') ? '' : 'selected' }}>
-                            選択してください
-                        </option>
-                        @foreach($conditions as $condition)
-                            <option
-                                value="{{ $condition->id }}"
-                                {{ old('product_condition_id')==$condition->id ? 'selected' : '' }}>
-                                {{ $condition->name }}
+                    <div class="exhibition-form__select-inner">
+                        <select
+                            name="product_condition_id"
+                            id="product_condition_id"
+                            class="exhibition-form__select"
+                        >
+                            <option value="" disabled selected>
+                                選択してください
                             </option>
-                        @endforeach
-                    </select>
+                            @foreach($conditions as $condition)
+                                <option
+                                    value="{{ $condition->id }}"
+                                    {{ old('product_condition_id')==$condition->id ? 'selected' : '' }}>
+                                    {{ $condition->name }}
+                                </option>
+                            @endforeach
+                        </select>
+                    </div>
                     @error('product_condition_id')
                     <p class="exhibition-form__error-message">{{ $message }}</p>
                     @enderror
@@ -145,20 +149,22 @@
 
                 <div class="exhibition-form__group">
                     <label for="price" class="exhibition-form__label">販売価格</label>
-                    <input
-                        type="text"
-                        name="price"
-                        id="price"
-                        value="{{ old('price') }}"
-                        class="exhibition-form__input"
-                    >
+                    <div class="exhibition-form__price-wrapper">
+                        <input
+                            type="text"
+                            name="price"
+                            id="price"
+                            value="{{ old('price') }}"
+                            class="exhibition-form__input exhibition-form__input--price"
+                        >
+                    </div>
                     @error('price')
                     <p class="exhibition-form__error-message">{{ $message }}</p>
                     @enderror
                 </div>
 
                 <div>
-                    <input type="submit" value="出品する" class="exhibition-form__btn btn">
+                    <input type="submit" value="出品する" class="exhibition-form__btn">
                 </div>
             </form>
         </div>
