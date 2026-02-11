@@ -89,107 +89,100 @@ class PurchaseController extends Controller
         $paymentMethod = PaymentMethod::findOrFail($request->payment_method_id);
         $stripePaymentMethod = $paymentMethod->stripe_type;
 
-        // ユーザー・住所情報取得
-        $user = Auth::user();
+        // 住所情報取得
         $address = session('purchase.address');
 
-        // stripe秘密キーの設定
-        Stripe::setApiKey(config('services.stripe.secret'));
+        /*
+        コンビニ支払いを選択した場合は、「購入する」ボタンを押した際に購入処理を走らせる
+        カード支払いの場合は、stripeの決済画面に遷移させる
+        */
+        if ($stripePaymentMethod === 'konbini') {
+            // 二重購入防止
+            $exists = Order::where('user_id', Auth::id())
+                ->where('product_id', $item_id)
+                ->exists();
+            if ($exists) {
+                session()->forget('purchase');
+                return redirect('/');
+            }
 
-        // Checkout Sessionの作成
-        $session = Session::create([
-            'payment_method_types' => [$stripePaymentMethod],
-            'line_items' => [[
-                'price_data'=> [
-                    'currency' => 'jpy',
-                    'product_data' => ['name' => $product->name],
-                    'unit_amount' => $product->price,
-                ],
-                'quantity' => 1,
-            ]],
-            'mode' => 'payment',
-            'success_url' => url("/purchase/success/{$item_id}"),
-            'cancel_url' => url("/purchase/{$item_id}"),
-            'payment_intent_data' => [
-                'metadata' => [
-                    'product_id' => $product->id,
-                    'user_id' => $user->id,
-                    'postal_code' => $address['postal_code'],
-                    'address' => $address['address'],
-                    'building' => $address['building'],
-                    'payment_method_id' => $paymentMethod->id,
-                ],
-            ],
-        ]);
+            // Orderの作成
+            Order::create([
+                'user_id' => Auth::id(),
+                'product_id' => $item_id,
+                'postal_code' => $address['postal_code'],
+                'address' => $address['address'],
+                'building' => $address['building'],
+                'payment_method_id' => $request->payment_method_id,
+                'created_at' => now(),
+            ]);
 
-        return redirect($session->url);
+            // 商品購入日の更新
+            Product::where('id', $item_id)->update(['sold_at' => now()]);
+
+            // sessionのクリア
+            session()->forget('purchase');
+
+            return redirect('/');
+        }
+
+        else {
+            // stripe秘密キーの設定
+            Stripe::setApiKey(config('services.stripe.secret'));
+
+            // Checkout Sessionの作成
+            $session = Session::create([
+                'payment_method_types' => [$stripePaymentMethod],
+                'line_items' => [[
+                    'price_data'=> [
+                        'currency' => 'jpy',
+                        'product_data' => ['name' => $product->name],
+                        'unit_amount' => $product->price,
+                    ],
+                    'quantity' => 1,
+                ]],
+                'mode' => 'payment',
+                'success_url' => url("/purchase/success/{$item_id}"),
+                'cancel_url' => url("/purchase/{$item_id}"),
+            ]);
+
+            return redirect($session->url);
+        }
     }
 
     // 決済成功後の処理
     public function handleStripeSuccess($item_id)
     {
+        // sessionから購入情報を取得
+        $address = session('purchase.address');
+        $paymentMethodId = session('purchase.payment_method_id');
+
+        // 二重購入防止
+        $exists = Order::where('user_id', Auth::id())
+            ->where('product_id', $item_id)
+            ->exists();
+        if ($exists) {
+            session()->forget('purchase');
+            return redirect('/');
+        }
+
+        // Orderの作成
+        Order::create([
+            'user_id' => Auth::id(),
+            'product_id' => $item_id,
+            'postal_code' => $address['postal_code'],
+            'address' => $address['address'],
+            'building' => $address['building'],
+            'payment_method_id' => $paymentMethodId,
+            'created_at' => now(),
+        ]);
+
+        // 商品購入日の更新
+        Product::where('id', $item_id)->update(['sold_at' => now()]);
+
         // sessionのクリア
         session()->forget('purchase');
 
         return redirect('/');
-    }
-
-    // Stripe Webhookの処理
-    public function handleStripeWebhook(Request $request)
-    {
-        // Stripeから送られてくる生データ
-        $payload = $request->getContent();
-        $sigHeader = $request->header('Stripe-Signature');
-        $endpointSecret = config('services.stripe.webhook_secret');
-
-        // Stripeの署名認証
-        try {
-            $event = \Stripe\Webhook::constructEvent(
-                $payload,
-                $sigHeader,
-                $endpointSecret
-            );
-        } catch (\Exception $e) {
-            return response('Invalid', 400);
-        }
-
-        // 支払い完了イベントのみの処理
-        if ($event->type === 'payment_intent.succeeded') {
-            $intent = $event->data->object;
-
-            // metadataの取得
-            $productId = $intent->metadata->product_id ?? null;
-            $userId = $intent->metadata->user_id ?? null;
-            $postalCode = $intent->metadata->postal_code ?? null;
-            $address = $intent->metadata->address ?? null;
-            $building = $intent->metadata->building ?? null;
-            $paymentMethodId = $intent->metadata->payment_method_id ?? null;
-
-            if ($productId && $userId && $paymentMethodId) {
-                // 二重登録防止
-                $exists = Order::where('user_id', $userId)
-                    ->where('product_id', $productId)
-                    ->exists();
-
-                if (! $exists) {
-                    // Orderの作成
-                    Order::create([
-                        'user_id' => $userId,
-                        'product_id' => $productId,
-                        'postal_code' => $postalCode,
-                        'address' => $address,
-                        'building' => $building,
-                        'payment_method_id' => $paymentMethodId,
-                        'created_at' => now(),
-                    ]);
-
-                    // 商品購入日の更新
-                    Product::where('id', $productId)->update(['sold_at' => now()]);
-                }
-            }
-        }
-
-        // Webhook は常に 200 を返す
-        return response('OK', 200);
     }
 }

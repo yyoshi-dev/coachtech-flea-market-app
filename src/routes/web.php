@@ -41,6 +41,3 @@ Route::middleware(['auth', 'verified', 'profile.completed'])->group(function () 
     Route::get('/sell', [ExhibitionController::class, 'create']);
     Route::post('/sell', [ExhibitionController::class, 'store']);
 });
-
-// Stripe Webhook用のルート
-Route::post('/stripe/webhook', [PurchaseController::class, 'handleStripeWebhook']);
