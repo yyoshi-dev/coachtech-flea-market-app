@@ -21,6 +21,9 @@ Route::post('/item/{item_id}/comment', [ItemController::class, 'comment'])
 Route::get('/email/verify', function () {
     return view('auth.verify-email');
 })->middleware('auth')->name('verification.notice');
+Route::get('/email/verify/mailhog', function () {
+    return redirect(config('services.mailhog.url'));
+})->middleware('auth')->name('verification.mailhog');
 
 // プロフィール設定 (初回ログイン時)
 Route::middleware(['auth', 'verified'])->group(function () {
