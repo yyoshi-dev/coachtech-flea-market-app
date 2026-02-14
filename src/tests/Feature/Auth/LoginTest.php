@@ -125,7 +125,7 @@ class LoginTest extends TestCase
         $this->get('/login')->assertStatus(200);
 
         // 全ての必須項目を入力して送信
-        $response = $this->postLogin([
+        $this->postLogin([
             'email' => 'success@example.com',
             'password' => 'test1234'
         ]);

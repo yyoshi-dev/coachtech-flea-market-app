@@ -27,7 +27,7 @@ class LogoutTest extends TestCase
         $this->actingAs($user);
 
         // ログアウトする
-        $response = $this->post('/logout');
+        $this->post('/logout');
 
         // ログアウトされている事を確認
         $this->assertGuest();
