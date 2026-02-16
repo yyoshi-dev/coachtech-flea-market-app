@@ -76,28 +76,24 @@ class ItemListTest extends TestCase
         $this->seed(ProductConditionSeeder::class);
 
         // 自分で出品した商品とそれ以外の商品を作成
-        $myProducts = collect([
-            Product::factory()->create([
-                'user_id' => $me->id,
-                'name' => '自分が出品した商品1',
-            ]),
-            Product::factory()->create([
-                'user_id' => $me->id,
-                'name' => '自分が出品した商品2',
-            ]),
-        ]);
-        $otherProducts = collect([
-            Product::factory()->create([
-                'user_id' => $other->id,
-                'name' => '他者が出品した商品1',
-            ]),
-            Product::factory()->create([
-                'user_id' => $other->id,
-                'name' => '他者が出品した商品2',
-            ]),
-        ]);
+        $myProducts = Product::factory()
+            ->count(2)
+            ->state(['user_id' => $me->id])
+            ->sequence(
+                ['name' => 'TEST_MY_ITEM_1'],
+                ['name' => 'TEST_MY_ITEM_2'],
+            )
+            ->create();
+        $otherProducts = Product::factory()
+            ->count(2)
+            ->state(['user_id' => $other->id])
+            ->sequence(
+                ['name' => 'TEST_OTHER_ITEM_1'],
+                ['name' => 'TEST_OTHER_ITEM_2'],
+            )
+            ->create();
 
-        // ログインして商品一覧画面にアクセスして表示を確認
+        // ログインし商品一覧画面にアクセスして表示を確認
         $response = $this->actingAs($me)->get('/');
         $response->assertOk();
 
