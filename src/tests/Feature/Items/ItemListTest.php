@@ -42,8 +42,21 @@ class ItemListTest extends TestCase
         $this->seed(ProductConditionSeeder::class);
 
         // 未購入・購入済み商品データの両方を作成
-        $normalProducts = Product::factory()->count(2)->create();
-        $soldProducts = Product::factory()->count(2)->sold()->create();
+        $normalProducts = Product::factory()
+            ->count(2)
+            ->sequence(
+                ['name' => 'TEST_NORMAL_1'],
+                ['name' => 'TEST_NORMAL_2'],
+            )
+            ->create();
+        $soldProducts = Product::factory()
+            ->count(2)
+            ->sold()
+            ->sequence(
+                ['name' => 'TEST_SOLD_1'],
+                ['name' => 'TEST_SOLD_2'],
+            )
+            ->create();
 
         // 商品一覧画面の表示を確認
         $response = $this->get('/');
