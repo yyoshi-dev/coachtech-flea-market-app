@@ -70,7 +70,7 @@ class ItemListTest extends TestCase
         // 購入済み商品に「Sold」ラベルが表示される事を確認
         // Soldラベルの数が購入済み商品の数と一致する事を確認
         $html = $response->getContent();
-        $this->assertEquals(
+        $this->assertSame(
             $soldProducts->count(),
             substr_count($html, 'data-testid="sold-badge"')
         );
