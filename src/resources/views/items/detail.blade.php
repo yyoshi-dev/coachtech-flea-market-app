@@ -80,7 +80,9 @@
                             @endif
                         </button>
                     </form>
-                    <p class="item__likes-count">{{ $product->productLikes->count() }}</p>
+                    <p data-testid="likes-count" class="item__likes-count">
+                        {{ $product->productLikes->count() }}
+                    </p>
                 </div>
                 <div class="item__comments-area">
                     <img
@@ -88,7 +90,9 @@
                         alt="speech-bubble-logo"
                         class="item__comments-icon"
                     >
-                    <p class="item__comments-count">{{ $product->productComments->count() }}</p>
+                    <p data-testid="comments-count" class="item__comments-count">
+                        {{ $product->productComments->count() }}
+                    </p>
                 </div>
             </div>
             <div class="item__purchase-area">
@@ -124,7 +128,9 @@
         {{-- コメントブロック --}}
         <div class="item__comment-block">
             {{-- コメント表示 --}}
-            <h3 class="item__comment-title">コメント ({{ $product->productComments->count() }})</h3>
+            <h3 data-testid="comments-title" class="item__comment-title">
+                コメント ({{ $product->productComments->count() }})
+            </h3>
             @if ($product->productComments->isNotEmpty())
                 @foreach($product->productComments as $comment)
                     <div class="item__comment-user">
