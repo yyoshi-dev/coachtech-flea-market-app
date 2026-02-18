@@ -8,7 +8,6 @@ use Illuminate\Support\Facades\Route;
 
 // 商品一覧
 Route::get('/', [ItemController::class, 'index']);
-Route::get('/search', [ItemController::class, 'search']);
 
 // 商品詳細
 Route::get('/item/{item_id}', [ItemController::class, 'show']);
