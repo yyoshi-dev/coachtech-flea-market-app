@@ -14,7 +14,7 @@ class LogoutTest extends TestCase
     /**
      * ログアウトができる
      */
-    public function testUserCanLogout()
+    public function test_user_can_logout()
     {
         // ユーザーを登録
         $user = User::factory()->create([

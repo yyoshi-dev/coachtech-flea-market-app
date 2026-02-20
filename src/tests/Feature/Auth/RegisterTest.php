@@ -28,7 +28,7 @@ class RegisterTest extends TestCase
     /**
      * 名前が入力されていない場合、バリデーションメッセージが表示される
      */
-    public function testNameIsRequired() {
+    public function test_name_is_required() {
         // 会員登録ページが開ける事を確認
         $this->get('/register')->assertStatus(200);
 
@@ -47,7 +47,7 @@ class RegisterTest extends TestCase
     /**
      * メールアドレスが入力されていない場合、バリデーションメッセージが表示される
      */
-    public function testEmailIsRequired() {
+    public function test_email_is_required() {
         // 会員登録ページが開ける事を確認
         $this->get('/register')->assertStatus(200);
 
@@ -66,7 +66,7 @@ class RegisterTest extends TestCase
     /**
      * パスワードが入力されていない場合、バリデーションメッセージが表示される
      */
-    public function testPasswordIsRequired() {
+    public function test_password_is_required() {
         // 会員登録ページが開ける事を確認
         $this->get('/register')->assertStatus(200);
 
@@ -85,7 +85,7 @@ class RegisterTest extends TestCase
     /**
      * パスワードが7文字以下の場合、バリデーションメッセージが表示される
      */
-    public function testPasswordIsTooShort() {
+    public function test_password_is_too_short() {
         // 会員登録ページが開ける事を確認
         $this->get('/register')->assertStatus(200);
 
@@ -107,7 +107,7 @@ class RegisterTest extends TestCase
     /**
      * パスワードが確認用パスワードと一致しない場合、バリデーションメッセージが表示される
      */
-    public function testPasswordConfirmationDoesNotMatch() {
+    public function test_password_confirmation_does_not_match() {
         // 会員登録ページが開ける事を確認
         $this->get('/register')->assertStatus(200);
 
@@ -129,7 +129,7 @@ class RegisterTest extends TestCase
     /**
      * 全ての項目が入力されている場合、会員情報が登録され、メール認証誘導画面に遷移される
      */
-    public function testUserIsRegisteredAndRedirectedToEmailVerification() {
+    public function test_user_is_registered_and_redirected_to_email_verification() {
         // 会員登録ページが開ける事を確認
         $this->get('/register')->assertStatus(200);
 

@@ -21,7 +21,7 @@ class ItemDetailTest extends TestCase
      * (商品画像、商品名、ブランド名、価格、いいね数、コメント数、商品説明、
      * 商品情報 (カテゴリ、商品の状態)、コメント数、コメントしたユーザー情報、コメント内容)
      */
-    public function testProductDetailsAreDisplayedCorrectly()
+    public function test_product_details_are_displayed_correctly()
     {
         // ユーザーを作成
         $user = User::factory()->create();
@@ -120,7 +120,7 @@ class ItemDetailTest extends TestCase
     /**
      * 複数選択されたカテゴリが表示されているか
      */
-    public function testMultipleCategoriesAreDisplayed()
+    public function test_multiple_categories_are_displayed()
     {
         // 商品状態データ、商品カテゴリデータの作成
         $this->seed(ProductConditionSeeder::class);

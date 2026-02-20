@@ -16,7 +16,7 @@ class MyListTest extends TestCase
     /**
      * いいねした商品だけが表示される
      */
-    public function testUserSeesOnlyLikedItemsInMyList()
+    public function test_user_sees_only_liked_items_in_my_list()
     {
         // ユーザーを作成
         $me = User::factory()->create();
@@ -69,7 +69,7 @@ class MyListTest extends TestCase
     /**
      * 購入済み商品は「Sold」と表示される
      */
-    public function testSoldItemDisplaySoldLabelInMyList()
+    public function test_sold_item_display_sold_label_in_my_list()
     {
         // ユーザーを作成
         $me = User::factory()->create();
@@ -126,7 +126,7 @@ class MyListTest extends TestCase
     // /**
     //  * 未認証の場合は何も表示されない
     //  */
-    public function testGuestSeesNoItemsInMyList()
+    public function test_guest_sees_no_items_in_my_list()
     {
         // ユーザーを作成
         $seller = User::factory()->create();

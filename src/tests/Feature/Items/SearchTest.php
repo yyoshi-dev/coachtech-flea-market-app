@@ -17,7 +17,7 @@ class SearchTest extends TestCase
      * 「商品名」で部分一致検索ができる
      * ゲストの場合
      */
-    public function testGuestCanSearchProductsByKeyword()
+    public function test_guest_can_search_products_by_keyword()
     {
         // 商品状態データの作成
         $this->seed(ProductConditionSeeder::class);
@@ -46,7 +46,7 @@ class SearchTest extends TestCase
      * 「商品名」で部分一致検索ができる
      * ログインユーザーの場合
      */
-    public function testLoggedInUserCanSearchProductsByKeywordExcludingOwnProducts()
+    public function test_logged_in_user_can_search_products_by_keyword_excluding_own_products()
     {
         // ユーザーを作成
         $me = User::factory()->create();
@@ -88,7 +88,7 @@ class SearchTest extends TestCase
     /**
      * 検索状態がマイリストでも保持されている
      */
-    public function testSearchKeywordIsPreservedInMyList()
+    public function test_search_keyword_is_preserved_in_my_list()
     {
         // ユーザーを作成
         $me = User::factory()->create();

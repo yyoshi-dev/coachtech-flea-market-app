@@ -28,7 +28,7 @@ class LoginTest extends TestCase
     /**
      * メールアドレスが入力されていない場合、バリデーションメッセージが表示される
      */
-    public function testEmailIsRequired() {
+    public function test_email_is_required() {
         // ログインページが開ける事を確認
         $this->get('/login')->assertStatus(200);
 
@@ -44,7 +44,7 @@ class LoginTest extends TestCase
     /**
      * パスワードが入力されていない場合、バリデーションメッセージが表示される
      */
-    public function testPasswordIsRequired() {
+    public function test_password_is_required() {
         // ログインページが開ける事を確認
         $this->get('/login')->assertStatus(200);
 
@@ -61,7 +61,7 @@ class LoginTest extends TestCase
      * 入力情報が間違っている場合、バリデーションメッセージが表示される
      * データベースにデータがない場合の検証
      */
-    public function testLoginFailsWhenUserDoesNotExist() {
+    public function test_login_fails_when_user_does_not_exist() {
         // ログインページが開ける事を確認
         $this->get('/login')->assertStatus(200);
 
@@ -84,7 +84,7 @@ class LoginTest extends TestCase
      * 入力情報が間違っている場合、バリデーションメッセージが表示される
      * ユーザーは登録されているが、パスワードが間違っている場合の検証
      */
-    public function testLoginFailsWithWrongPassword() {
+    public function test_login_fails_with_wrong_password() {
         // ユーザーを登録
         User::factory()->create([
             'name' => '検証ユーザー',
@@ -113,7 +113,7 @@ class LoginTest extends TestCase
     /**
      * 正しい情報が入力された場合、ログイン処理が実行される
      */
-    public function testUserCanLogin() {
+    public function test_user_can_login() {
         // ユーザーを登録
         $user = User::factory()->create([
             'name' => '検証ユーザー',

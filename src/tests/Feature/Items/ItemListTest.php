@@ -15,7 +15,7 @@ class ItemListTest extends TestCase
     /**
      * 全商品を取得できる
      */
-    public function testAllItemsAreDisplayed()
+    public function test_all_items_are_displayed()
     {
         // 商品状態データの作成
         $this->seed(ProductConditionSeeder::class);
@@ -36,7 +36,7 @@ class ItemListTest extends TestCase
     /**
      * 購入済み商品は「Sold」と表示される
      */
-    public function testSoldItemDisplaySoldLabel()
+    public function test_sold_item_display_sold_label()
     {
         // 商品状態データの作成
         $this->seed(ProductConditionSeeder::class);
@@ -79,7 +79,7 @@ class ItemListTest extends TestCase
     /**
      * 自分が出品した商品は表示されない
      */
-    public function testUserDoesNotSeeOwnItemsInList()
+    public function test_user_does_not_see_own_items_in_list()
     {
         // ユーザーを作成
         $me = User::factory()->create();

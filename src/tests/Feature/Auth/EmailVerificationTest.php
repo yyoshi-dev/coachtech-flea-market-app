@@ -16,7 +16,7 @@ class EmailVerificationTest extends TestCase
     /**
      * 会員登録後、認証メールが送信される
      */
-    public function testVerificationEmailIsSent()
+    public function test_verification_email_is_sent()
     {
         // メールの送信を擬装する
         Notification::fake();
@@ -38,7 +38,7 @@ class EmailVerificationTest extends TestCase
     /**
      * メール認証誘導画面で「認証はこちらから」ボタンを押下するとメール認証サイトに遷移する
      */
-    public function testRedirectToEmailVerificationSite() {
+    public function test_redirect_to_email_verification_site() {
         // 未認証ユーザーとしてログイン
         $user = User::factory()->create([
             'email_verified_at' => null,
@@ -57,7 +57,7 @@ class EmailVerificationTest extends TestCase
     /**
      * メール認証サイトのメール認証を完了すると、プロフィール設定画面に遷移する
      */
-    public function testEmailVerificationRedirectsToProfileSetting() {
+    public function test_email_verification_redirects_to_profile_setting() {
         // 未認証ユーザーとしてログイン
         $user = User::factory()->create([
             'email_verified_at' => null,
