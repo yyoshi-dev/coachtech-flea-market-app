@@ -216,8 +216,14 @@ class LikeTest extends TestCase
         $this->assertNotNull($categoryId);
         $product->productCategories()->attach($categoryId);
 
+        // いいね前のいいね数が0件である事を確認
+        $this->assertDatabaseCount('product_likes', 0);
+
         // ログインせずに商品詳細画面にていいねを実行する場合、ログインページにリダイレクトされる事を確認
         $response = $this->post("/item/{$product->id}/like");
         $response->assertRedirect('/login');
+
+        // いいね数が増えていない事を確認
+        $this->assertDatabaseCount('product_likes', 0);
     }
 }
