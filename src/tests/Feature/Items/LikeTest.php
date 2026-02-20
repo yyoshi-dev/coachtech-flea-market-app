@@ -53,7 +53,9 @@ class LikeTest extends TestCase
             ], false);
 
         // ログインして商品詳細画面にていいねを実行
-        $this->actingAs($user)->post("/item/{$product->id}/like")->assertStatus(302);
+        $this->actingAs($user)
+            ->post("/item/{$product->id}/like")
+            ->assertRedirect("/item/{$product->id}");
 
         // いいねした商品として登録されている事を確認
         $this->assertDatabaseHas('product_likes', [
@@ -106,7 +108,9 @@ class LikeTest extends TestCase
         $response->assertDontSee('alt="heart-logo-pink"', false);
 
         // ログインして商品詳細画面にていいねを実行
-        $this->actingAs($user)->post("/item/{$product->id}/like")->assertStatus(302);
+        $this->actingAs($user)
+            ->post("/item/{$product->id}/like")
+            ->assertRedirect("/item/{$product->id}");
 
         // いいねした商品として登録されている事を確認
         $this->assertDatabaseHas('product_likes', [
@@ -165,7 +169,9 @@ class LikeTest extends TestCase
             ], false);
 
         // ログインして商品詳細画面にていいね解除を実行
-        $this->actingAs($user)->post("/item/{$product->id}/like")->assertStatus(302);
+        $this->actingAs($user)
+            ->post("/item/{$product->id}/like")
+            ->assertRedirect("/item/{$product->id}");
 
         // いいねした商品として登録されていない事を確認
         $this->assertDatabaseMissing('product_likes', [
