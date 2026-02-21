@@ -108,6 +108,7 @@
             </div>
 
             {{-- 購入処理 --}}
+            {{-- delivery_addressはPurchaseRequestの必須要件を満たす為だけに送信 (住所の実体はsession(purchase.address)を使用) --}}
             <input type="hidden" name="delivery_address" value="{{ serialize($address) }}">
             @error('delivery_address')
                 <p class="purchase-form__error-message">{{ $message }}</p>
