@@ -60,7 +60,7 @@
                         class="payment-methods__select"
                         onchange="this.form.submit()"
                     >
-                        <option disabled selected>選択してください</option>
+                        <option disabled {{ $selectedPaymentMethod ? '' : 'selected' }}>選択してください</option>
                         @foreach ($paymentMethods as $paymentMethod)
                             <option value="{{ $paymentMethod->id }}"
                                 {{ $selectedPaymentMethod && $selectedPaymentMethod->id == $paymentMethod->id ? 'selected' : '' }}>
@@ -101,7 +101,9 @@
                     <tr class="purchase-summary__row">
                         <th class="purchase-summary__header">支払い方法</th>
                         @if ($selectedPaymentMethod)
-                            <td class="purchase-summary__text">{{ $selectedPaymentMethod->name }}</td>
+                            <td data-testid="subtotal-payment-method" class="purchase-summary__text">
+                                {{ $selectedPaymentMethod->name }}
+                            </td>
                         @endif
                     </tr>
                 </table>
