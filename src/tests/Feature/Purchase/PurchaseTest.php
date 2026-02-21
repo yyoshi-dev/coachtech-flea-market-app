@@ -32,7 +32,7 @@ class PurchaseTest extends TestCase
     /**
      * 「共通テストデータ (購入者、出品者、商品)を準備する
      */
-    private function prepareUsersAndProduct()
+    private function prepareUsersAndProduct(): void
     {
         // ユーザーを作成
         $this->buyer = User::factory()->create();
@@ -52,10 +52,108 @@ class PurchaseTest extends TestCase
     /**
      * 支払い方法を準備する
      */
-    private function preparePaymentMethodIds()
+    private function preparePaymentMethodIds(): void
     {
         $this->konbiniPaymentMethodId = PaymentMethod::where('stripe_type', 'konbini')->value('id');
         $this->cardPaymentMethodId = PaymentMethod::where('stripe_type', 'card')->value('id');
+    }
+
+    /**
+     * Stripeモックを作成する
+     */
+    private function mockStripeCheckoutSessionCreate(string $url = 'https://stripe.test/checkout-session'): void
+    {
+        // StripeClientのモックを作成
+        $stripeMock = Mockery::mock(StripeClient::class);
+
+        // session->create()を受けるモックを定義
+        $sessionsService = Mockery::mock();
+        $sessionsService->shouldReceive('create')
+            ->once()
+            ->andReturn((object)[
+                'id' => 'cs_test_123',
+                'url' => $url,
+            ]);
+
+        // checkout serviceがsessionsプロパティを持っている形を用意
+        $checkoutService = new class($sessionsService) {
+            public $sessions;
+            public function __construct($sessionsService)
+            {
+                $this->sessions = $sessionsService;
+            }
+        };
+
+        // Stripe SDKは$stripe->checkoutアクセス時に内部でgetService('checkout)を呼ぶ為、そこを定義
+        $stripeMock->shouldReceive('getService')
+            ->with('checkout')
+            ->once()
+            ->andReturn($checkoutService);
+
+        // コンテナにモックを登録
+        $this->app->instance(StripeClient::class, $stripeMock);
+    }
+
+    /**
+     * コンビニ支払いによる購入処理を完了する (ログイン、商品購入画面の表示、購入処理の実行)
+     */
+    private function completePurchaseFlowByKonbini(User $buyer, Product $product): void
+    {
+        // ログインして、購入画面を開く
+        $this->actingAs($buyer)
+            ->get("/purchase/{$product->id}")
+            ->assertOk();
+
+        // セッションから住所を取得する
+        $address = session('purchase.address');
+        $this->assertNotNull($address);
+
+        // フォームリクエスト用のdelivery_addressを作成する
+        $deliveryAddress = serialize($address);
+
+        // 購入処理を実行し、トップページにリダイレクトすることを確認する
+        $this->actingAs($buyer)
+            ->post("/purchase/{$product->id}", [
+                'delivery_address' => $deliveryAddress,
+                'payment_method_id' => $this->konbiniPaymentMethodId,
+            ])
+            ->assertRedirect('/');
+    }
+
+    /**
+     * カード支払いによる購入処理を完了する (ログイン、商品購入画面の表示、購入処理の実行)
+     */
+    private function completePurchaseFlowByCard(User $buyer, Product $product): void
+    {
+        // ログインして、購入画面を開く
+        $this->actingAs($buyer)
+            ->get("/purchase/{$product->id}")
+            ->assertOk();
+
+        // セッションから住所を取得する
+        $address = session('purchase.address');
+        $this->assertNotNull($address);
+
+        // フォームリクエスト用のdelivery_addressを作成する
+        $deliveryAddress = serialize($address);
+
+        // Stripeモックを作成
+        $this->mockStripeCheckoutSessionCreate();
+
+        // 購入処理を実行し、stripe決済画面へ遷移する事を確認する
+        $this->actingAs($buyer)
+            ->post("/purchase/{$product->id}", [
+                'delivery_address' => $deliveryAddress,
+                'payment_method_id' => $this->cardPaymentMethodId,
+            ])
+            ->assertRedirect('https://stripe.test/checkout-session');
+
+        // stripe決済実行後のsuccess_urlにアクセス
+        $successResponse = $this->actingAs($buyer)
+            ->get("/purchase/success/{$product->id}");
+
+        // stripe決済完了後にトップページにリダイレクトする事を確認
+        $successResponse->assertRedirect('/');
     }
 
     /**
@@ -95,27 +193,8 @@ class PurchaseTest extends TestCase
         // 購入前のOrderが0件である事を確認
         $this->assertDatabaseCount('orders', 0);
 
-        // ログインして、購入画面を開く
-        $this->actingAs($this->buyer)
-            ->get("/purchase/{$this->product->id}")
-            ->assertOk();
-
-        // セッションから住所を取得する
-        $address = session('purchase.address');
-        $this->assertNotNull($address);
-
-        // フォームリクエスト用のdelivery_addressを作成する
-        $deliveryAddress = serialize($address);
-
-        // 購入処理を実行する
-        $response =$this->actingAs($this->buyer)
-            ->post("/purchase/{$this->product->id}", [
-                'delivery_address' => $deliveryAddress,
-                'payment_method_id' => $this->konbiniPaymentMethodId,
-            ]);
-
-        // 購入処理完了後にトップページにリダイレクトする事を確認
-        $response->assertRedirect('/');
+        // ログインして、購入画面を開き、購入処理を実行する
+        $this->completePurchaseFlowByKonbini($this->buyer, $this->product);
 
         // 購入後のOrderが1件である事を確認
         $this->assertDatabaseCount('orders', 1);
@@ -147,64 +226,8 @@ class PurchaseTest extends TestCase
         // 購入前のOrderが0件である事を確認
         $this->assertDatabaseCount('orders', 0);
 
-        // ログインして、購入画面を開く
-        $this->actingAs($this->buyer)
-            ->get("/purchase/{$this->product->id}")
-            ->assertOk();
-
-        // セッションから住所を取得する
-        $address = session('purchase.address');
-        $this->assertNotNull($address);
-
-        // フォームリクエスト用のdelivery_addressを作成する
-        $deliveryAddress = serialize($address);
-
-        // StripeClientのモックを作成
-        $stripeMock = Mockery::mock(StripeClient::class);
-
-        // session->create()を受けるモックを定義
-        $sessionsService = Mockery::mock();
-        $sessionsService->shouldReceive('create')
-            ->once()
-            ->andReturn((object)[
-                'id' => 'cs_test_123',
-                'url' => 'https://stripe.test/checkout-session',
-            ]);
-
-        // checkout serviceがsessionsプロパティを持っている形を用意
-        $checkoutService = new class($sessionsService) {
-            public $sessions;
-            public function __construct($sessionsService)
-            {
-                $this->sessions = $sessionsService;
-            }
-        };
-
-        // Stripe SDKは$stripe->checkoutアクセス時に内部でgetService('checkout)を呼ぶ為、そこを定義
-        $stripeMock->shouldReceive('getService')
-            ->with('checkout')
-            ->once()
-            ->andReturn($checkoutService);
-
-        // コンテナにモックを登録
-        $this->app->instance(StripeClient::class, $stripeMock);
-
-        // 購入処理を実行する
-        $response = $this->actingAs($this->buyer)
-            ->post("/purchase/{$this->product->id}", [
-                'delivery_address' => $deliveryAddress,
-                'payment_method_id' => $this->cardPaymentMethodId,
-            ]);
-
-        // stripe決済画面へ遷移する事を確認
-        $response->assertRedirect('https://stripe.test/checkout-session');
-
-        // stripe決済実行後のsuccess_urlにアクセス
-        $successResponse = $this->actingAs($this->buyer)
-            ->get("/purchase/success/{$this->product->id}");
-
-        // stripe決済完了後にトップページにリダイレクトする事を確認
-        $successResponse->assertRedirect('/');
+        // ログインして、購入画面を開き、購入処理を実行し、stripe決済を行う
+        $this->completePurchaseFlowByCard($this->buyer, $this->product);
 
         // stripe決済完了後のOrderが1件である事を確認
         $this->assertDatabaseCount('orders', 1);
@@ -236,25 +259,8 @@ class PurchaseTest extends TestCase
         // 商品が購入前である事を確認
         $this->assertNull($this->product->sold_at);
 
-        // ログインして、購入画面を開く
-        $this->actingAs($this->buyer)
-            ->get("/purchase/{$this->product->id}")
-            ->assertOk();
-
-        // セッションから住所を取得する
-        $address = session('purchase.address');
-        $this->assertNotNull($address);
-
-        // フォームリクエスト用のdelivery_addressを作成する
-        $deliveryAddress = serialize($address);
-
-        // 購入処理を実行する
-        $this->actingAs($this->buyer)
-            ->post("/purchase/{$this->product->id}", [
-                'delivery_address' => $deliveryAddress,
-                'payment_method_id' => $this->konbiniPaymentMethodId,
-            ])
-            ->assertRedirect('/');
+        // ログインして、購入画面を開き、購入処理を実行する
+        $this->completePurchaseFlowByKonbini($this->buyer, $this->product);
 
         // 商品が購入済みになっているかを確認
         $this->assertNotNull($this->product->fresh()->sold_at);
@@ -288,62 +294,8 @@ class PurchaseTest extends TestCase
         // 商品が購入前である事を確認
         $this->assertNull($this->product->sold_at);
 
-        // ログインして、購入画面を開く
-        $this->actingAs($this->buyer)
-            ->get("/purchase/{$this->product->id}")
-            ->assertOk();
-
-        // セッションから住所を取得する
-        $address = session('purchase.address');
-        $this->assertNotNull($address);
-
-        // フォームリクエスト用のdelivery_addressを作成する
-        $deliveryAddress = serialize($address);
-
-        // StripeClientのモックを作成
-        $stripeMock = Mockery::mock(StripeClient::class);
-
-        // session->create()を受けるモックを定義
-        $sessionsService = Mockery::mock();
-        $sessionsService->shouldReceive('create')
-            ->once()
-            ->andReturn((object)[
-                'id' => 'cs_test_123',
-                'url' => 'https://stripe.test/checkout-session',
-            ]);
-
-        // checkout serviceがsessionsプロパティを持っている形を用意
-        $checkoutService = new class($sessionsService) {
-            public $sessions;
-            public function __construct($sessionsService)
-            {
-                $this->sessions = $sessionsService;
-            }
-        };
-
-        // Stripe SDKは$stripe->checkoutアクセス時に内部でgetService('checkout)を呼ぶ為、そこを定義
-        $stripeMock->shouldReceive('getService')
-            ->with('checkout')
-            ->once()
-            ->andReturn($checkoutService);
-
-        // コンテナにモックを登録
-        $this->app->instance(StripeClient::class, $stripeMock);
-
-        // 購入処理を実行する
-        $response = $this->actingAs($this->buyer)
-            ->post("/purchase/{$this->product->id}", [
-                'delivery_address' => $deliveryAddress,
-                'payment_method_id' => $this->cardPaymentMethodId,
-            ]);
-
-        // stripe決済画面へ遷移する事を確認
-        $response->assertRedirect('https://stripe.test/checkout-session');
-
-        // stripe決済実行後のsuccess_urlにアクセス
-        $this->actingAs($this->buyer)
-            ->get("/purchase/success/{$this->product->id}")
-            ->assertRedirect('/');
+        // ログインして、購入画面を開き、購入処理を実行し、stripe決済を行う
+        $this->completePurchaseFlowByCard($this->buyer, $this->product);
 
         // 商品が購入済みになっているかを確認
         $this->assertNotNull($this->product->fresh()->sold_at);
@@ -377,25 +329,8 @@ class PurchaseTest extends TestCase
         // 商品が購入前である事を確認
         $this->assertNull($this->product->sold_at);
 
-        // ログインして、購入画面を開く
-        $this->actingAs($this->buyer)
-            ->get("/purchase/{$this->product->id}")
-            ->assertOk();
-
-        // セッションから住所を取得する
-        $address = session('purchase.address');
-        $this->assertNotNull($address);
-
-        // フォームリクエスト用のdelivery_addressを作成する
-        $deliveryAddress = serialize($address);
-
-        // 購入処理を実行する
-        $this->actingAs($this->buyer)
-            ->post("/purchase/{$this->product->id}", [
-                'delivery_address' => $deliveryAddress,
-                'payment_method_id' => $this->konbiniPaymentMethodId,
-            ])
-            ->assertRedirect('/');
+        // ログインして、購入画面を開き、購入処理を実行する
+        $this->completePurchaseFlowByKonbini($this->buyer, $this->product);
 
         // 商品が購入済みになっているかを確認
         $this->assertNotNull($this->product->fresh()->sold_at);
@@ -425,62 +360,8 @@ class PurchaseTest extends TestCase
         // 商品が購入前である事を確認
         $this->assertNull($this->product->sold_at);
 
-        // ログインして、購入画面を開く
-        $this->actingAs($this->buyer)
-            ->get("/purchase/{$this->product->id}")
-            ->assertOk();
-
-        // セッションから住所を取得する
-        $address = session('purchase.address');
-        $this->assertNotNull($address);
-
-        // フォームリクエスト用のdelivery_addressを作成する
-        $deliveryAddress = serialize($address);
-
-        // StripeClientのモックを作成
-        $stripeMock = Mockery::mock(StripeClient::class);
-
-        // session->create()を受けるモックを定義
-        $sessionsService = Mockery::mock();
-        $sessionsService->shouldReceive('create')
-            ->once()
-            ->andReturn((object)[
-                'id' => 'cs_test_123',
-                'url' => 'https://stripe.test/checkout-session',
-            ]);
-
-        // checkout serviceがsessionsプロパティを持っている形を用意
-        $checkoutService = new class($sessionsService) {
-            public $sessions;
-            public function __construct($sessionsService)
-            {
-                $this->sessions = $sessionsService;
-            }
-        };
-
-        // Stripe SDKは$stripe->checkoutアクセス時に内部でgetService('checkout)を呼ぶ為、そこを定義
-        $stripeMock->shouldReceive('getService')
-            ->with('checkout')
-            ->once()
-            ->andReturn($checkoutService);
-
-        // コンテナにモックを登録
-        $this->app->instance(StripeClient::class, $stripeMock);
-
-        // 購入処理を実行する
-        $response = $this->actingAs($this->buyer)
-            ->post("/purchase/{$this->product->id}", [
-                'delivery_address' => $deliveryAddress,
-                'payment_method_id' => $this->cardPaymentMethodId,
-            ]);
-
-        // stripe決済画面へ遷移する事を確認
-        $response->assertRedirect('https://stripe.test/checkout-session');
-
-        // stripe決済実行後のsuccess_urlにアクセス
-        $this->actingAs($this->buyer)
-            ->get("/purchase/success/{$this->product->id}")
-            ->assertRedirect('/');
+        // ログインして、購入画面を開き、購入処理を実行し、stripe決済を行う
+        $this->completePurchaseFlowByCard($this->buyer, $this->product);
 
         // 商品が購入済みになっているかを確認
         $this->assertNotNull($this->product->fresh()->sold_at);
