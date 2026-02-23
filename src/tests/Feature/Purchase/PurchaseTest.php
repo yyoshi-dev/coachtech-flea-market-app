@@ -146,7 +146,8 @@ class PurchaseTest extends TestCase
                 'delivery_address' => $deliveryAddress,
                 'payment_method_id' => $this->cardPaymentMethodId,
             ])
-            ->assertRedirect('https://stripe.test/checkout-session');
+            ->assertRedirect('https://stripe.test/checkout-session')
+            ->assertSessionHas('purchase.payment_method_id', $this->cardPaymentMethodId);
 
         // stripe決済実行後のsuccess_urlにアクセス
         $successResponse = $this->actingAs($buyer)
