@@ -7,7 +7,7 @@
 
 {{-- ヘッダーの検索フォーム部分 --}}
 @section('header-search')
-<form action="/search" method="get" class="search-form">
+<form action="/" method="get" class="search-form">
     <input
         type="text"
         name="keyword"
@@ -60,7 +60,7 @@
                         class="payment-methods__select"
                         onchange="this.form.submit()"
                     >
-                        <option disabled selected>選択してください</option>
+                        <option disabled {{ $selectedPaymentMethod ? '' : 'selected' }}>選択してください</option>
                         @foreach ($paymentMethods as $paymentMethod)
                             <option value="{{ $paymentMethod->id }}"
                                 {{ $selectedPaymentMethod && $selectedPaymentMethod->id == $paymentMethod->id ? 'selected' : '' }}>
@@ -80,7 +80,7 @@
                     変更する
                 </a>
             </div>
-            <div class="delivery-address__content">
+            <div data-testid="delivery-address" class="delivery-address__content">
                 <span class="delivery-address__text">〒 {{ $address['postal_code'] }}</span>
                 <span class="delivery-address__text">{{ $address['address'] }}</span>
                 <span class="delivery-address__text">{{ $address['building'] }}</span>
@@ -101,13 +101,16 @@
                     <tr class="purchase-summary__row">
                         <th class="purchase-summary__header">支払い方法</th>
                         @if ($selectedPaymentMethod)
-                            <td class="purchase-summary__text">{{ $selectedPaymentMethod->name }}</td>
+                            <td data-testid="subtotal-payment-method" class="purchase-summary__text">
+                                {{ $selectedPaymentMethod->name }}
+                            </td>
                         @endif
                     </tr>
                 </table>
             </div>
 
             {{-- 購入処理 --}}
+            {{-- delivery_addressはPurchaseRequestの必須要件を満たす為だけに送信 (住所の実体はsession(purchase.address)を使用) --}}
             <input type="hidden" name="delivery_address" value="{{ serialize($address) }}">
             @error('delivery_address')
                 <p class="purchase-form__error-message">{{ $message }}</p>

@@ -16,7 +16,7 @@ class DatabaseSeeder extends Seeder
     public function run(): void
     {
         // usersのダミーデータ作成
-        User::factory(10)->create();
+        User::factory()->count(10)->create();
 
         // payment_methodsのダミーデータの作成
         $this->call(PaymentMethodSeeder::class);

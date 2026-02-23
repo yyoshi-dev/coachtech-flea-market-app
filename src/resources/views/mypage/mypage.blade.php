@@ -7,7 +7,7 @@
 
 {{-- ヘッダーの検索フォーム部分 --}}
 @section('header-search')
-<form action="/search" method="get" class="search-form">
+<form action="/" method="get" class="search-form">
     <input
         type="text"
         name="keyword"

@@ -40,4 +40,8 @@ return [
         'public' => env('STRIPE_PUBLIC'),
     ],
 
+    'mailhog' => [
+        'url' => env('MAILHOG_URL', 'http://localhost:8025/'),
+    ],
+
 ];

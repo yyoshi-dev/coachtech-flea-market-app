@@ -9,8 +9,7 @@ use App\Models\Order;
 use App\Models\PaymentMethod;
 use App\Models\Product;
 use Illuminate\Support\Facades\Auth;
-use Stripe\Checkout\Session;
-use Stripe\Stripe;
+use Stripe\StripeClient;
 
 class PurchaseController extends Controller
 {
@@ -82,6 +81,9 @@ class PurchaseController extends Controller
     // 購入処理 (stripe決済画面への遷移)
     public function purchase(PurchaseRequest $request, $item_id)
     {
+        // 支払い方法をセッションに追加
+        session(['purchase.payment_method_id' => $request->payment_method_id]);
+
         // 商品情報の取得
         $product = Product::findOrFail($item_id);
 
@@ -127,11 +129,9 @@ class PurchaseController extends Controller
         }
 
         else {
-            // stripe秘密キーの設定
-            Stripe::setApiKey(config('services.stripe.secret'));
-
-            // Checkout Sessionの作成
-            $session = Session::create([
+            // Checkout SessionをStripeClient経由で作成
+            $stripe = app(StripeClient::class);
+            $session = $stripe->checkout->sessions->create([
                 'payment_method_types' => [$stripePaymentMethod],
                 'line_items' => [[
                     'price_data'=> [

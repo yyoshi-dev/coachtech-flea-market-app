@@ -11,7 +11,7 @@
         メール認証を完了してください。
     </span>
 
-    <a href="http://localhost:8025/" class="verification-content__link">
+    <a href="{{ route('verification.mailhog') }}" class="verification-content__link">
         認証はこちらから
     </a>
 

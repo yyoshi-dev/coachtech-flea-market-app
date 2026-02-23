@@ -7,7 +7,7 @@
 
 {{-- ヘッダーの検索フォーム部分 --}}
 @section('header-search')
-<form action="/search" method="get" class="search-form">
+<form action="/" method="get" class="search-form">
     <input
         type="text"
         name="keyword"
@@ -69,7 +69,7 @@
                     <div class="item-list__name-wrapper">
                         <p class="item-list__name">{{ $product->name }}</p>
                         @if ($product->is_sold)
-                            <span class="item-list__sold-label">Sold</span>
+                            <span data-testid="sold-badge" class="item-list__sold-label">Sold</span>
                         @endif
                     </div>
                 </a>
