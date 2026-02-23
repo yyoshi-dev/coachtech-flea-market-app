@@ -28,7 +28,7 @@ class ProductFactory extends Factory
             'description' => fake()->text(200),
             'price' => fake()->numberBetween(100, 100000),
             'product_condition_id' => ProductCondition::query()->firstOrFail()->id,
-            'product_image_path' => 'products/dummy_product.jpg',
+            'product_image_path' => 'products/dummy_product.jpeg',
             'sold_at' => null,
         ];
     }

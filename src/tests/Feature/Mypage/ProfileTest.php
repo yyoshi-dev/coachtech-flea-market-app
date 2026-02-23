@@ -21,7 +21,7 @@ class ProfileTest extends TestCase
     public function test_user_profile_page_displays_required_information()
     {
         // ユーザーを作成
-        $me = User::factory()->create(['profile_image_path' => 'profiles/dummy_profile.jpg']);
+        $me = User::factory()->create(['profile_image_path' => 'profiles/dummy_profile.jpeg']);
         $other = User::factory()->create();
 
         // 商品状態、支払い方法データの投入
