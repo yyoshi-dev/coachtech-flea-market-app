@@ -28,7 +28,7 @@ class OrderFactory extends Factory
             'postal_code' => fake()->numerify('###-####'),
             'address' => fake()->prefecture() . ' ' . fake()->city() . ' ' . fake()->streetAddress(),
             'building' => fake()->secondaryAddress(),
-            'payment_method_id' => PaymentMethod::inRandomOrder()->value('id'),
+            'payment_method_id' => PaymentMethod::query()->first()->id,
         ];
     }
 }
