@@ -80,7 +80,7 @@
                     変更する
                 </a>
             </div>
-            <div class="delivery-address__content">
+            <div data-testid="delivery-address" class="delivery-address__content">
                 <span class="delivery-address__text">〒 {{ $address['postal_code'] }}</span>
                 <span class="delivery-address__text">{{ $address['address'] }}</span>
                 <span class="delivery-address__text">{{ $address['building'] }}</span>
