@@ -21,7 +21,7 @@
     color: #5f5f5f;
 }
 
-.tab-menu__link.active {
+.tab-menu__link--active {
     color: #ff0000;
 }
 

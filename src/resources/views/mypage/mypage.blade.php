@@ -43,16 +43,16 @@
     </div>
 
     {{-- 商品一覧 --}}
-    <ul class="item-list">
+    <ul class="mypage-items">
         @foreach ($products as $product)
-            <li class="item-list__item">
+            <li class="mypage-items__item">
                 <img
                     src="{{ asset('storage/' . $product->product_image_path) }}"
                     alt="{{ $product->name }}"
-                    class="item-list__image"
+                    class="mypage-items__image"
                 >
-                <div class="item-list__name-wrapper">
-                    <p class="item-list__name">{{ $product->name }}</p>
+                <div class="mypage-items__name-wrapper">
+                    <p class="mypage-items__name">{{ $product->name }}</p>
                 </div>
             </li>
         @endforeach

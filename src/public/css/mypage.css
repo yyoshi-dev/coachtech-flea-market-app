@@ -81,7 +81,7 @@
     color: #ff0000;
 }
 
-.item-list {
+.mypage-items {
     display: grid;
     grid-template-columns: repeat(4, 290px);
     justify-content: center;
@@ -91,20 +91,20 @@
     margin: 0;
 }
 
-.item-list__item {
+.mypage-items__item {
     display: flex;
     flex-direction: column;
     height: 320px;
 }
 
-.item-list__image {
+.mypage-items__image {
     width: 100%;
     aspect-ratio: 1 / 1;
     object-fit: cover;
     border-radius: 4px;
 }
 
-.item-list__name-wrapper {
+.mypage-items__name-wrapper {
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -112,7 +112,7 @@
     height: 30px;
 }
 
-.item-list__name {
+.mypage-items__name {
     color: #000000;
     font-size: 25px;
     margin: 0;

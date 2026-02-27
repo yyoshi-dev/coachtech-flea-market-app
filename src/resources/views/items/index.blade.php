@@ -13,13 +13,13 @@
     <div class="tab-menu">
         <a
             href="/?keyword={{ request('keyword') }}"
-            class="tab-menu__link {{ request('tab') !== 'mylist' ? 'active' : '' }}"
+            class="tab-menu__link {{ request('tab') !== 'mylist' ? 'tab-menu__link--active' : '' }}"
         >
             おすすめ
         </a>
         <a
             href="/?tab=mylist&keyword={{ request('keyword') }}"
-            class="tab-menu__link {{ request('tab') === 'mylist' ? 'active' : '' }}"
+            class="tab-menu__link {{ request('tab') === 'mylist' ? 'tab-menu__link--active' : '' }}"
         >
             マイリスト
         </a>
