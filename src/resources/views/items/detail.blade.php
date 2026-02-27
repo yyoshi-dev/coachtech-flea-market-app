@@ -22,7 +22,7 @@
     <div class="item__description-area">
         {{-- 商品タイトルブロック --}}
         <div class="item__title-block">
-            <h2 class="item__title">{{ $product->name }}</h2>
+            <h1 class="item__title">{{ $product->name }}</h1>
             <p class="item__brand">{{ $product->brand_name }}</p>
             <p class="item__price">
                 <span class="item__price-currency">¥</span>{{ number_format($product->price) }}
@@ -68,7 +68,7 @@
                 @if ($product->is_sold)
                     <span class="item__purchase-link item__purchase-link--disabled">Sold</span>
                 @else
-                    <a href="/purchase/{{ $product->id }}" class="item__purchase-link">購入手続きへ</a>
+                    <a href="/purchase/{{ $product->id }}" class="item__purchase-link btn">購入手続きへ</a>
                 @endif
             </div>
         </div>
@@ -103,8 +103,8 @@
             @if ($product->productComments->isNotEmpty())
                 @foreach($product->productComments as $comment)
                     <div class="item__comment-user">
-                        <span class="item__comment-user--mark"></span>
-                        <span class="item__comment-user--name">{{ $comment->user->name }}</span>
+                        <span class="item__comment-user-mark"></span>
+                        <span class="item__comment-user-name">{{ $comment->user->name }}</span>
                     </div>
                     <p class="item__comment-text">{{ $comment->comment }}</p>
                 @endforeach
@@ -125,7 +125,7 @@
                 <p class="comment-form__error-message">{{ $message }}</p>
                 @enderror
 
-                <button type="submit" class="comment-form__btn">コメントを送信する</button>
+                <button type="submit" class="comment-form__btn btn">コメントを送信する</button>
             </form>
         </div>
     </div>
