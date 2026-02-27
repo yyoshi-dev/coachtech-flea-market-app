@@ -77,7 +77,7 @@
     color: #5f5f5f;
 }
 
-.page-menu__link.active {
+.page-menu__link--active {
     color: #ff0000;
 }
 

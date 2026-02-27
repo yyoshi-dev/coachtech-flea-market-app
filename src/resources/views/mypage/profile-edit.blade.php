@@ -1,38 +1,16 @@
-@extends('layouts.app')
+{{-- Header --}}
+@extends('layouts.app_header_auth')
 
 {{-- CSS --}}
 @section('css')
 <link rel="stylesheet" href="{{ asset('css/profile.css') }}">
 @endsection
 
-{{-- ヘッダーの検索フォーム部分 --}}
-@section('header-search')
-<form action="/" method="get" class="search-form">
-    <input
-        type="text"
-        name="keyword"
-        placeholder="なにをお探しですか？"
-        value="{{request('keyword')}}"
-        class="search-form__input"
-    >
-    <button type="submit" class="search-form__hidden-button"></button>
-</form>
-@endsection
-
-{{-- ヘッダーのリンク部分 --}}
-@section('header-nav')
-<form action="/logout" method="post" class="logout-form">
-    @csrf
-    <button type="submit" class="logout-form__button">ログアウト</button>
-</form>
-<a href="/mypage" class="mypage-link">マイページ</a>
-<a href="/sell" class="sell-link">出品</a>
-@endsection
-
+{{-- Content --}}
 @section('content')
 <div class="profile-edit-content">
     <div class="profile-form">
-        <h2 class="profile-form__heading">プロフィール設定</h2>
+        <h1 class="profile-form__heading">プロフィール設定</h1>
 
         <div class="profile-form__inner">
             <form action="/mypage/profile" method="post" enctype="multipart/form-data" class="profile-form__form">

@@ -1,43 +1,12 @@
-@extends('layouts.app')
+{{-- Header --}}
+@extends('layouts.app_header_guest')
 
 {{-- CSS --}}
 @section('css')
 <link rel="stylesheet" href="{{ asset('css/item-detail.css') }}">
 @endsection
 
-{{-- ヘッダーの検索フォーム部分 --}}
-@section('header-search')
-<form action="/" method="get" class="search-form">
-    <input
-        type="text"
-        name="keyword"
-        placeholder="なにをお探しですか？"
-        value="{{request('keyword')}}"
-        class="search-form__input"
-    >
-    <button type="submit" class="search-form__hidden-button"></button>
-</form>
-@endsection
-
-{{-- ヘッダーのリンク部分 --}}
-@section('header-nav')
-{{-- 未認証時の表示内容 --}}
-@guest
-    <a href="/login" class="login-link">ログイン</a>
-@endguest
-{{-- 認証時の表示内容 --}}
-@auth
-    <form action="/logout" method="post" class="logout-form">
-        @csrf
-        <button type="submit" class="logout-form__button">ログアウト</button>
-    </form>
-@endauth
-{{-- 未認証・認証共通の表示内容 --}}
-<a href="/mypage" class="mypage-link">マイページ</a>
-<a href="/sell" class="sell-link">出品</a>
-@endsection
-
-
+{{-- Content --}}
 @section('content')
 <div class="item-detail-content">
     {{-- 商品画像 --}}
