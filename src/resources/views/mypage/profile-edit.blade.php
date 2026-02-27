@@ -96,7 +96,7 @@
                 </div>
 
                 <div>
-                    <input type="submit" value="更新する" class="profile-form__btn">
+                    <input type="submit" value="更新する" class="profile-form__btn btn">
                 </div>
             </form>
         </div>
