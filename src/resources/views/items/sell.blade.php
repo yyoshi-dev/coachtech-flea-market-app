@@ -10,7 +10,7 @@
 @section('content')
 <div class="exhibition-content">
     <div class="exhibition-form">
-        <h2 class="exhibition-form__heading">商品の出品</h2>
+        <h1 class="exhibition-form__heading">商品の出品</h1>
 
         <div class="exhibition-form__inner">
             <form action="/sell" method="post" enctype="multipart/form-data" class="exhibition-form__form">
@@ -45,9 +45,12 @@
                                     name="product_category_ids[]"
                                     id="category_{{ $category->id }}"
                                     value="{{ $category->id }}"
+                                    class="exhibition-form__checkbox"
                                     {{ is_array(old('product_category_ids')) && in_array($category->id, old('product_category_ids')) ? 'checked' : '' }}
                                 >
-                                {{ $category->name }}
+                                <span class="exhibition-form__checkbox-text">
+                                    {{ $category->name }}
+                                </span>
                             </label>
                         @endforeach
                     </div>
@@ -142,7 +145,7 @@
                 </div>
 
                 <div>
-                    <input type="submit" value="出品する" class="exhibition-form__btn">
+                    <input type="submit" value="出品する" class="exhibition-form__btn btn">
                 </div>
             </form>
         </div>
