@@ -221,10 +221,23 @@ class EditAddressTest extends TestCase
             }
         };
 
-        // Stripe SDKは$stripe->checkoutアクセス時に内部でgetService('checkout)を呼ぶ為、そこを定義
+        // stripe success時のretrieve結果を定義
+        $sessionsService->shouldReceive('retrieve')
+            ->once()
+            ->with('cs_test_123', [])
+            ->andReturn((object)[
+                'payment_status' => 'paid',
+                'client_reference_id' => (string) $this->buyer->id,
+                'metadata' => (object) [
+                    'item_id' => (string) $this->product->id,
+                    'payment_method_id' => (string) $selectedMethodId,
+                ],
+            ]);
+
+        // Stripe SDKは$stripe->checkoutアクセス時に内部でgetService('checkout')を呼ぶ為、そこを定義
         $stripeMock->shouldReceive('getService')
             ->with('checkout')
-            ->once()
+            ->twice()
             ->andReturn($checkoutService);
 
         // コンテナにモックを登録
@@ -244,7 +257,7 @@ class EditAddressTest extends TestCase
 
         // stripe決済実行後のsuccess_urlにアクセスし、トップページにリダイレクトする事を確認
         $this->actingAs($this->buyer)
-            ->get("/purchase/success/{$this->product->id}")
+            ->get("/purchase/success/{$this->product->id}?session_id=cs_test_123")
             ->assertRedirect('/');
 
         // 購入後のOrderが1件である事を確認
