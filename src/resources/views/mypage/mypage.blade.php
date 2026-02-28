@@ -1,80 +1,58 @@
-@extends('layouts.app')
+{{-- Header --}}
+@extends('layouts.app_header_auth')
 
 {{-- CSS --}}
 @section('css')
 <link rel="stylesheet" href="{{ asset('css/mypage.css') }}">
 @endsection
 
-{{-- ヘッダーの検索フォーム部分 --}}
-@section('header-search')
-<form action="/" method="get" class="search-form">
-    <input
-        type="text"
-        name="keyword"
-        placeholder="なにをお探しですか？"
-        value="{{request('keyword')}}"
-        class="search-form__input"
-    >
-    <button type="submit" class="search-form__hidden-button"></button>
-</form>
-@endsection
-
-{{-- ヘッダーのリンク部分 --}}
-@section('header-nav')
-<form action="/logout" method="post" class="logout-form">
-    @csrf
-    <button type="submit" class="logout-form__button">ログアウト</button>
-</form>
-<a href="/mypage" class="mypage-link">マイページ</a>
-<a href="/sell" class="sell-link">出品</a>
-@endsection
-
+{{-- Content --}}
 @section('content')
 <div class="mypage-content">
     {{-- ユーザー情報 --}}
     <div class="user-profile">
-        <div class="user-info">
+        <div class="user-profile__info">
             @if ($user->profile_image_path)
                 <img
                     src="{{ asset('storage/' . $user->profile_image_path) }}"
                     alt="{{ $user->name }}"
-                    class="profile__image"
+                    class="user-profile__image"
                 >
             @else
-                <div class="profile__image-placeholder"></div>
+                <div class="user-profile__image-placeholder"></div>
             @endif
-            <span class="user__name">{{ $user->name }}</span>
+            <span class="user-profile__name">{{ $user->name }}</span>
         </div>
-        <a href="/mypage/profile" class="profile-edit__link">プロフィールを編集</a>
+        <a href="/mypage/profile" class="user-profile__edit-link">プロフィールを編集</a>
     </div>
 
     {{-- ページ切り替え部分 --}}
     <div class="page-menu">
         <a
             href="/mypage?page=sell"
-            class="page-menu__link {{ $page === 'sell' ? 'active' : '' }}"
+            class="page-menu__link {{ $page === 'sell' ? 'page-menu__link--active' : '' }}"
         >
             出品した商品
         </a>
         <a
             href="/mypage?page=buy"
-            class="page-menu__link {{ $page === 'buy' ? 'active' : '' }}"
+            class="page-menu__link {{ $page === 'buy' ? 'page-menu__link--active' : '' }}"
         >
             購入した商品
         </a>
     </div>
 
     {{-- 商品一覧 --}}
-    <ul class="item-list">
+    <ul class="mypage-items">
         @foreach ($products as $product)
-            <li class="item-list__item">
+            <li class="mypage-items__item">
                 <img
                     src="{{ asset('storage/' . $product->product_image_path) }}"
                     alt="{{ $product->name }}"
-                    class="item-list__image"
+                    class="mypage-items__image"
                 >
-                <div class="item-list__name-wrapper">
-                    <p class="item-list__name">{{ $product->name }}</p>
+                <div class="mypage-items__name-wrapper">
+                    <p class="mypage-items__name">{{ $product->name }}</p>
                 </div>
             </li>
         @endforeach

@@ -21,7 +21,7 @@
     color: #5f5f5f;
 }
 
-.tab-menu__link.active {
+.tab-menu__link--active {
     color: #ff0000;
 }
 
@@ -63,7 +63,6 @@
 }
 
 .item-list__name {
-    color: #000000;
     font-size: 25px;
     margin: 0;
     white-space: nowrap;

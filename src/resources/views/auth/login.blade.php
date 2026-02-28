@@ -7,7 +7,7 @@
 @section('content')
 <div class="auth-content">
     <div class="auth-form">
-        <h2 class="auth-form__heading">ログイン</h2>
+        <h1 class="auth-form__heading form-heading">ログイン</h1>
 
         <div class="auth-form__inner">
             <form action="/login" method="post" class="auth-form__form" novalidate>
@@ -30,12 +30,12 @@
                 </div>
 
                 <div>
-                    <input type="submit" value="ログインする" class="auth-form__btn">
+                    <input type="submit" value="ログインする" class="auth-form__btn btn">
                 </div>
             </form>
         </div>
     </div>
 
-    <a href="/register" class="auth-form__register-link">会員登録はこちら</a>
+    <a href="/register" class="auth-content__link">会員登録はこちら</a>
 </div>
 @endsection

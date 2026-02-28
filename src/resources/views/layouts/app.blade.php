@@ -10,6 +10,8 @@
     <link rel="stylesheet" href="{{ asset('css/base.css') }}">
     <link rel="stylesheet" href="{{ asset('css/layout.css') }}">
     <link rel="stylesheet" href="{{ asset('css/components.css') }}">
+
+    {{-- Page CSS --}}
     @yield('css')
 </head>
 

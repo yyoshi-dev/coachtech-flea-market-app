@@ -17,7 +17,7 @@
 
     <form action="{{ route('verification.send') }}" method="post" class="verification-form">
         @csrf
-        <button type="submit" class="verification-form__notification_btn">認証メールを再送する</button>
+        <button type="submit" class="verification-form__notification-btn">認証メールを再送する</button>
     </form>
 
 </div>

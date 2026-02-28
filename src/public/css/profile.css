@@ -14,12 +14,7 @@
 }
 
 .profile-form__heading {
-    font-size: 36px;
-    font-weight: bold;
-    color: #000000;
-    padding-bottom: 20px;
-    margin: 0;
-    text-align: center;
+    padding-bottom: 40px;
 }
 
 .profile-form__inner {
@@ -83,7 +78,6 @@
 .profile-form__label {
     font-size: 24px;
     font-weight: bold;
-    color: #000000;
 }
 
 .profile-form__input {
@@ -93,7 +87,6 @@
     padding: 15px 10px;
     font-size: 24px;
     font-weight: bold;
-    color: #5f5f5f;
 }
 
 .profile-form__error-message {
@@ -102,19 +95,5 @@
 }
 
 .profile-form__btn {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    width: 100%;
-    height: 56px;
-    text-decoration: none;
-    text-align: center;
-    font-size: 26px;
-    font-weight: bold;
-    border-radius: 5px;
-    border: none;
-    cursor: pointer;
-    color: #ffffff;
-    background-color: #ff5555;
     margin-top: 30px;
 }

@@ -1,38 +1,16 @@
-@extends('layouts.app')
+{{-- Header --}}
+@extends('layouts.app_header_auth')
 
 {{-- CSS --}}
 @section('css')
 <link rel="stylesheet" href="{{ asset('css/sell.css') }}">
 @endsection
 
-{{-- ヘッダーの検索フォーム部分 --}}
-@section('header-search')
-<form action="/" method="get" class="search-form">
-    <input
-        type="text"
-        name="keyword"
-        placeholder="なにをお探しですか？"
-        value="{{request('keyword')}}"
-        class="search-form__input"
-    >
-    <button type="submit" class="search-form__hidden-button"></button>
-</form>
-@endsection
-
-{{-- ヘッダーのリンク部分 --}}
-@section('header-nav')
-<form action="/logout" method="post" class="logout-form">
-    @csrf
-    <button type="submit" class="logout-form__button">ログアウト</button>
-</form>
-<a href="/mypage" class="mypage-link">マイページ</a>
-<a href="/sell" class="sell-link">出品</a>
-@endsection
-
+{{-- Content --}}
 @section('content')
 <div class="exhibition-content">
     <div class="exhibition-form">
-        <h2 class="exhibition-form__heading">商品の出品</h2>
+        <h1 class="exhibition-form__heading form-heading">商品の出品</h1>
 
         <div class="exhibition-form__inner">
             <form action="/sell" method="post" enctype="multipart/form-data" class="exhibition-form__form">
@@ -55,7 +33,7 @@
                     @enderror
                 </div>
 
-                <h3 class="exhibition-form__sub-heading">商品の詳細</h3>
+                <h2 class="exhibition-form__sub-heading">商品の詳細</h2>
 
                 <div class="exhibition-form__group">
                     <label for="product_category_ids" class="exhibition-form__label">カテゴリー</label>
@@ -67,9 +45,12 @@
                                     name="product_category_ids[]"
                                     id="category_{{ $category->id }}"
                                     value="{{ $category->id }}"
+                                    class="exhibition-form__checkbox"
                                     {{ is_array(old('product_category_ids')) && in_array($category->id, old('product_category_ids')) ? 'checked' : '' }}
                                 >
-                                {{ $category->name }}
+                                <span class="exhibition-form__checkbox-text">
+                                    {{ $category->name }}
+                                </span>
                             </label>
                         @endforeach
                     </div>
@@ -103,7 +84,7 @@
                     @enderror
                 </div>
 
-                <h3 class="exhibition-form__sub-heading">商品名と説明</h3>
+                <h2 class="exhibition-form__sub-heading">商品名と説明</h2>
 
                 <div class="exhibition-form__group">
                     <label for="name" class="exhibition-form__label">商品名</label>
@@ -164,7 +145,7 @@
                 </div>
 
                 <div>
-                    <input type="submit" value="出品する" class="exhibition-form__btn">
+                    <input type="submit" value="出品する" class="exhibition-form__btn btn">
                 </div>
             </form>
         </div>

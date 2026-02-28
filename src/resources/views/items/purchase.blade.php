@@ -1,35 +1,12 @@
-@extends('layouts.app')
+{{-- Header --}}
+@extends('layouts.app_header_auth')
 
 {{-- CSS --}}
 @section('css')
 <link rel="stylesheet" href="{{ asset('css/purchase.css') }}">
 @endsection
 
-{{-- ヘッダーの検索フォーム部分 --}}
-@section('header-search')
-<form action="/" method="get" class="search-form">
-    <input
-        type="text"
-        name="keyword"
-        placeholder="なにをお探しですか？"
-        value="{{request('keyword')}}"
-        class="search-form__input"
-    >
-    <button type="submit" class="search-form__hidden-button"></button>
-</form>
-@endsection
-
-{{-- ヘッダーのリンク部分 --}}
-@section('header-nav')
-<form action="/logout" method="post" class="logout-form">
-    @csrf
-    <button type="submit" class="logout-form__button">ログアウト</button>
-</form>
-<a href="/mypage" class="mypage-link">マイページ</a>
-<a href="/sell" class="sell-link">出品</a>
-@endsection
-
-
+{{-- Content --}}
 @section('content')
 <div class="purchase-content">
     <div class="purchase-settings">
@@ -44,7 +21,11 @@
             </div>
             <div class="purchase-item__info-area">
                 <span class="purchase-item__name">{{ $product->name }}</span>
-                <p class="purchase-item__price">\{{ number_format($product->price) }}</p>
+                <p class="purchase-item__price">
+                    <span class="purchase-item__price-currency">
+                        ¥
+                    </span>{{ number_format($product->price) }}
+                </p>
             </div>
         </div>
 
@@ -60,7 +41,7 @@
                         class="payment-methods__select"
                         onchange="this.form.submit()"
                     >
-                        <option disabled {{ $selectedPaymentMethod ? '' : 'selected' }}>選択してください</option>
+                        <option value="" disabled {{ $selectedPaymentMethod ? '' : 'selected' }}>選択してください</option>
                         @foreach ($paymentMethods as $paymentMethod)
                             <option value="{{ $paymentMethod->id }}"
                                 {{ $selectedPaymentMethod && $selectedPaymentMethod->id == $paymentMethod->id ? 'selected' : '' }}>
@@ -96,7 +77,11 @@
                 <table class="purchase-summary__table">
                     <tr class="purchase-summary__row">
                         <th class="purchase-summary__header">商品代金</th>
-                        <td class="purchase-summary__text">\{{ number_format($product->price) }}</td>
+                        <td class="purchase-summary__text purchase-summary__text-price">
+                            <span class="purchase-summary__text-currency">
+                                ¥
+                            </span>{{ number_format($product->price) }}
+                        </td>
                     </tr>
                     <tr class="purchase-summary__row">
                         <th class="purchase-summary__header">支払い方法</th>
@@ -110,7 +95,7 @@
             </div>
 
             {{-- 購入処理 --}}
-            {{-- delivery_addressはPurchaseRequestの必須要件を満たす為だけに送信 (住所の実体はsession(purchase.address)を使用) --}}
+            {{-- delivery_addressはPurchaseRequest用のダミー (実体はsessionの住所を使用) --}}
             <input type="hidden" name="delivery_address" value="{{ serialize($address) }}">
             @error('delivery_address')
                 <p class="purchase-form__error-message">{{ $message }}</p>
@@ -120,7 +105,7 @@
             @error('payment_method_id')
                 <p class="purchase-form__error-message">{{ $message }}</p>
             @enderror
-            <button type="submit" class="purchase__btn">購入する</button>
+            <button type="submit" class="purchase__btn btn">購入する</button>
         </form>
     </div>
 </div>

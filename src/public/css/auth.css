@@ -1,3 +1,6 @@
+/**
+ * ログイン及び登録画面用途
+ */
 .auth-content {
     width: 100%;
     display: flex;
@@ -11,12 +14,7 @@
 }
 
 .auth-form__heading {
-    font-size: 36px;
-    font-weight: bold;
-    color: #000000;
-    padding-bottom: 20px;
-    margin: 0;
-    text-align: center;
+    padding-bottom: 40px;
 }
 
 .auth-form__inner {
@@ -32,7 +30,6 @@
 .auth-form__label {
     font-size: 24px;
     font-weight: bold;
-    color: #000000;
 }
 
 .auth-form__input {
@@ -42,7 +39,6 @@
     padding: 15px 10px;
     font-size: 24px;
     font-weight: bold;
-    color: #5f5f5f;
 }
 
 .auth-form__error-message {
@@ -51,25 +47,10 @@
 }
 
 .auth-form__btn {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    width: 100%;
-    height: 56px;
-    text-decoration: none;
-    text-align: center;
-    font-size: 26px;
-    font-weight: bold;
-    border-radius: 5px;
-    border: none;
-    cursor: pointer;
-    color: #ffffff;
-    background-color: #ff5555;
     margin-top: 30px;
 }
 
-.auth-form__login-link,
-.auth-form__register-link {
+.auth-content__link {
     display: flex;
     align-items: center;
     justify-content: center;
@@ -80,6 +61,9 @@
     cursor: pointer;
 }
 
+/**
+ * メール認証誘導画面用途
+ */
 .verification-content {
     width: 100%;
     display: flex;
@@ -91,7 +75,6 @@
 .verification-content__message {
     font-size: 24px;
     font-weight: bold;
-    color: #000000;
     text-align: center;
     padding-bottom: 40px;
 }
@@ -112,7 +95,7 @@
     margin-bottom: 40px;
 }
 
-.verification-form__notification_btn {
+.verification-form__notification-btn {
     display: flex;
     align-items: center;
     justify-content: center;
