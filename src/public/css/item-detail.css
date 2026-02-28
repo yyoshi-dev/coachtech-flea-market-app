@@ -51,11 +51,11 @@
 }
 
 .item__price-currency {
-    font-size: 0.7em;
+    font-size: 30px;
 }
 
 .item__price-tax {
-    font-size: 0.7em;
+    font-size: 30px;
 }
 
 .item__action-area {

@@ -66,7 +66,7 @@
             </div>
             <div class="item__purchase-area">
                 @if ($product->is_sold)
-                    <span class="item__purchase-link item__purchase-link--disabled">Sold</span>
+                    <span class="item__purchase-link btn item__purchase-link--disabled">Sold</span>
                 @else
                     <a href="/purchase/{{ $product->id }}" class="item__purchase-link btn">購入手続きへ</a>
                 @endif
