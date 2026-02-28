@@ -68,10 +68,24 @@ class PurchaseTest extends TestCase
 
         // session->create()を受けるモックを定義
         $sessionsService = Mockery::mock();
+        $sessionId = 'cs_test_123';
+        $capturedCreatePayload = null;  // create()に実際に渡された引数を保持し、後続のretrieve()返却値と整合させる為の変数
         $sessionsService->shouldReceive('create')
             ->once()
+            // ここがcreate()の引数チェック本体
+            ->withArgs(function (array $payload) use (&$capturedCreatePayload) {
+                // 引数を保存して、success側(retrieve)の返却値生成に使う
+                $capturedCreatePayload = $payload;
+
+                return ($payload['mode'] ?? null) === 'payment'
+                    && ($payload['payment_method_types'] ?? null) === ['card']
+                    && ($payload['success_url'] ?? '') === url("/purchase/success/{$this->product->id}?session_id={CHECKOUT_SESSION_ID}")
+                    && ($payload['cancel_url'] ?? '') === url("/purchase/{$this->product->id}")
+                    && (string) ($payload['metadata']['item_id'] ?? '') === (string) $this->product->id
+                    && (string) ($payload['metadata']['payment_method_id'] ?? '') === (string) $this->cardPaymentMethodId;
+            })
             ->andReturn((object)[
-                'id' => 'cs_test_123',
+                'id' => $sessionId,
                 'url' => $url,
             ]);
 
@@ -84,10 +98,26 @@ class PurchaseTest extends TestCase
             }
         };
 
-        // Stripe SDKは$stripe->checkoutアクセス時に内部でgetService('checkout)を呼ぶ為、そこを定義
+        // stripe success時のretrieve結果を定義
+        $sessionsService->shouldReceive('retrieve')
+            ->once()
+            ->with($sessionId, [])
+            // create()で渡された引数を使って返却値を組み立て、create/retrieveの整合を検証する
+            ->andReturnUsing(function () use (&$capturedCreatePayload) {
+                return (object) [
+                    'payment_status' => 'paid',
+                    'client_reference_id' => (string) ($capturedCreatePayload['client_reference_id'] ?? ''),
+                    'metadata' => (object) [
+                        'item_id' => (string) ($capturedCreatePayload['metadata']['item_id'] ?? ''),
+                        'payment_method_id' => (string) ($capturedCreatePayload['metadata']['payment_method_id'] ?? ''),
+                    ],
+                ];
+            });
+
+        // Stripe SDKは$stripe->checkoutアクセス時に内部でgetService('checkout')を呼ぶ為、そこを定義
         $stripeMock->shouldReceive('getService')
             ->with('checkout')
-            ->once()
+            ->twice()
             ->andReturn($checkoutService);
 
         // コンテナにモックを登録
@@ -151,7 +181,7 @@ class PurchaseTest extends TestCase
 
         // stripe決済実行後のsuccess_urlにアクセス
         $successResponse = $this->actingAs($buyer)
-            ->get("/purchase/success/{$product->id}");
+            ->get("/purchase/success/{$product->id}?session_id=cs_test_123");
 
         // stripe決済完了後にトップページにリダイレクトする事を確認
         $successResponse->assertRedirect('/');
