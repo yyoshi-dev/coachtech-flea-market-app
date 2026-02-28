@@ -10,7 +10,7 @@
 @section('content')
 <div class="profile-edit-content">
     <div class="profile-form">
-        <h1 class="profile-form__heading">プロフィール設定</h1>
+        <h1 class="profile-form__heading form-heading">プロフィール設定</h1>
 
         <div class="profile-form__inner">
             <form action="/mypage/profile" method="post" enctype="multipart/form-data" class="profile-form__form">

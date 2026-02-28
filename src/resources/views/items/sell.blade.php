@@ -10,7 +10,7 @@
 @section('content')
 <div class="exhibition-content">
     <div class="exhibition-form">
-        <h1 class="exhibition-form__heading">商品の出品</h1>
+        <h1 class="exhibition-form__heading form-heading">商品の出品</h1>
 
         <div class="exhibition-form__inner">
             <form action="/sell" method="post" enctype="multipart/form-data" class="exhibition-form__form">

@@ -11,12 +11,7 @@
 }
 
 .address-form__heading {
-    font-size: 36px;
-    font-weight: bold;
-    color: #000000;
     padding-bottom: 80px;
-    margin: 0;
-    text-align: center;
 }
 
 .address-form__inner {

@@ -14,12 +14,7 @@
 }
 
 .profile-form__heading {
-    font-size: 36px;
-    font-weight: bold;
-    color: #000000;
-    padding-bottom: 20px;
-    margin: 0;
-    text-align: center;
+    padding-bottom: 40px;
 }
 
 .profile-form__inner {

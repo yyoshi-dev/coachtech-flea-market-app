@@ -7,7 +7,7 @@
 @section('content')
 <div class="auth-content">
     <div class="auth-form">
-        <h1 class="auth-form__heading">会員登録</h1>
+        <h1 class="auth-form__heading form-heading">会員登録</h1>
 
         <div class="auth-form__inner">
             <form action="/register" method="post" class="auth-form__form" novalidate>
