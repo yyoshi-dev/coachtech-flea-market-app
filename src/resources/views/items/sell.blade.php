@@ -33,7 +33,7 @@
                     @enderror
                 </div>
 
-                <h3 class="exhibition-form__sub-heading">商品の詳細</h3>
+                <h2 class="exhibition-form__sub-heading">商品の詳細</h2>
 
                 <div class="exhibition-form__group">
                     <label for="product_category_ids" class="exhibition-form__label">カテゴリー</label>
@@ -84,7 +84,7 @@
                     @enderror
                 </div>
 
-                <h3 class="exhibition-form__sub-heading">商品名と説明</h3>
+                <h2 class="exhibition-form__sub-heading">商品名と説明</h2>
 
                 <div class="exhibition-form__group">
                     <label for="name" class="exhibition-form__label">商品名</label>

@@ -75,13 +75,13 @@
 
         {{-- 商品説明ブロック --}}
         <div class="item__description-block">
-            <h3 class="item__description-title">商品説明</h3>
+            <h2 class="item__description-title">商品説明</h2>
             <p class="item__description-text">{{ $product->description }}</p>
         </div>
 
         {{-- 商品情報ブロック --}}
         <div class="item__info-block">
-            <h3 class="item__info-title">商品の情報</h3>
+            <h2 class="item__info-title">商品の情報</h2>
             <div class="item__category">
                 <span class="item__category-title">カテゴリー</span>
                 @foreach($product->productCategories as $category)
@@ -97,9 +97,9 @@
         {{-- コメントブロック --}}
         <div class="item__comment-block">
             {{-- コメント表示 --}}
-            <h3 data-testid="comments-title" class="item__comment-title">
+            <h2 data-testid="comments-title" class="item__comment-title">
                 コメント ({{ $product->productComments->count() }})
-            </h3>
+            </h2>
             @if ($product->productComments->isNotEmpty())
                 @foreach($product->productComments as $comment)
                     <div class="item__comment-user">
