@@ -18,9 +18,9 @@
 @section('header-nav')
 <form action="/logout" method="post" class="logout-form">
     @csrf
-    <button type="submit" class="header-nav__link">ログアウト</button>
+    <button type="submit" class="header__link">ログアウト</button>
 </form>
 
-<a href="/mypage" class="header-nav__link">マイページ</a>
-<a href="/sell" class="header-nav__link header-nav__link--sell">出品</a>
+<a href="/mypage" class="header__link">マイページ</a>
+<a href="/sell" class="header__link header__link--sell">出品</a>
 @endsection

@@ -30,7 +30,7 @@
     display: none;
 }
 
-.header-nav__link {
+.header__link {
     display: flex;
     align-items: center;
     justify-content: center;
@@ -44,7 +44,7 @@
     cursor: pointer;
 }
 
-.header-nav__link--sell {
+.header__link--sell {
     padding: 0 24px;
     color: #000000;
     background-color: #ffffff;
