@@ -78,7 +78,6 @@
 .profile-form__label {
     font-size: 24px;
     font-weight: bold;
-    color: #000000;
 }
 
 .profile-form__input {
@@ -88,7 +87,6 @@
     padding: 15px 10px;
     font-size: 24px;
     font-weight: bold;
-    color: #5f5f5f;
 }
 
 .profile-form__error-message {

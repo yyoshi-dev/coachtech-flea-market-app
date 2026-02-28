@@ -30,7 +30,6 @@
 .auth-form__label {
     font-size: 24px;
     font-weight: bold;
-    color: #000000;
 }
 
 .auth-form__input {
@@ -40,7 +39,6 @@
     padding: 15px 10px;
     font-size: 24px;
     font-weight: bold;
-    color: #5f5f5f;
 }
 
 .auth-form__error-message {
@@ -77,7 +75,6 @@
 .verification-content__message {
     font-size: 24px;
     font-weight: bold;
-    color: #000000;
     text-align: center;
     padding-bottom: 40px;
 }

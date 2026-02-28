@@ -86,7 +86,7 @@
 .exhibition-form__label {
     font-size: 24px;
     font-weight: bold;
-    padding-bottom: 5px;
+    padding-bottom: 10px;
 }
 
 .exhibition-form__checkbox-group {
@@ -94,6 +94,7 @@
     flex-wrap: wrap;
     row-gap: 30px;
     column-gap: 20px;
+    padding: 15px 0;
 }
 
 .exhibition-form__checkbox {
