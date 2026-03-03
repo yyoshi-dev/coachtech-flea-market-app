@@ -8,7 +8,6 @@ use App\Models\ProductCondition;
 use App\Models\Product;
 use Illuminate\Support\Facades\Auth;
 
-
 class ExhibitionController extends Controller
 {
     public function create()

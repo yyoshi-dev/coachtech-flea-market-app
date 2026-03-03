@@ -23,7 +23,6 @@ class UserFactory extends Factory
     public function definition(): array
     {
         return [
-            // 'name' => fake()->name(),
             'name' => (function () {
                 $tries = 0;
                 do {
