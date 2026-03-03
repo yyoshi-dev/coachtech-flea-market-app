@@ -7,9 +7,6 @@
 .item__image-area,
 .item__description-area {
     flex: 1;
-}
-
-.item__description-area {
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -20,7 +17,7 @@
     aspect-ratio: 1 / 1;
     object-fit: cover;
     border-radius: 4px;
-    padding-top: 50px;
+    margin-top: 30px;
 }
 
 .item__title-block,
