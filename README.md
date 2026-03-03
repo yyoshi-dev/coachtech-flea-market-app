@@ -65,10 +65,10 @@
 
 7. storageディレクトリへ権限を付与
     ```bash
-    chmod -R 775 storage
-    chmod -R 775 bootstrap/cache
+    find storage bootstrap/cache -type d -exec chmod 775 {} \;
+    find storage bootstrap/cache -type f -exec chmod 664 {} \;
     ```
-    ※ これはDockerコンテナ内 (Linux)でのみ必要な権限設定であり、ホスト側でchmodを実行する必要はない (コンテナ内でのみ必要)
+    ※ 本コマンドは php コンテナ内で実行してください
 
     <br>
 
