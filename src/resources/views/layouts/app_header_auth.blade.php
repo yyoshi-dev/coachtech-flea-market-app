@@ -10,6 +10,8 @@
         value="{{ request('keyword') }}"
         class="search-form__input"
     >
+    {{-- 現在のタブ状態を検索時にも引き継ぐ --}}
+    <input type="hidden" name="tab" value="{{ request('tab') }}">
     <button type="submit" class="search-form__hidden-button"></button>
 </form>
 @endsection

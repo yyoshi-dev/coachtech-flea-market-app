@@ -12,13 +12,13 @@
     {{-- タブ部分 --}}
     <div class="tab-menu">
         <a
-            href="/?keyword={{ request('keyword') }}"
+            href="/{{ request('keyword') ? '?keyword=' . request('keyword') : '' }}"
             class="tab-menu__link {{ request('tab') !== 'mylist' ? 'tab-menu__link--active' : '' }}"
         >
             おすすめ
         </a>
         <a
-            href="/?tab=mylist&keyword={{ request('keyword') }}"
+            href="/?tab=mylist{{ request('keyword') ? '&keyword=' . request('keyword') : '' }}"
             class="tab-menu__link {{ request('tab') === 'mylist' ? 'tab-menu__link--active' : '' }}"
         >
             マイリスト
