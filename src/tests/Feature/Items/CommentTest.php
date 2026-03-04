@@ -153,7 +153,7 @@ class CommentTest extends TestCase
     }
 
     /**
-     * コメントが255字以上の場合、バリデーションメッセージが表示される
+     * コメントが256字以上の場合、バリデーションメッセージが表示される
      */
     public function test_comment_max_length_validation_error_is_displayed()
     {
@@ -178,7 +178,7 @@ class CommentTest extends TestCase
         // 送信前のコメント数が0件である事を確認
         $this->assertDatabaseCount('product_comments', 0);
 
-        // ログインし、商品詳細画面にて255字以上でコメントを送信する
+        // ログインし、商品詳細画面にて256字以上でコメントを送信する
         $tooLongComment = str_repeat('a', 256);
         $response = $this->actingAs($user)
             ->post("/item/{$product->id}/comment", ['comment' => $tooLongComment]);
