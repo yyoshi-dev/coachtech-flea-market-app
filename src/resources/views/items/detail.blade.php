@@ -82,15 +82,17 @@
         {{-- 商品情報ブロック --}}
         <div class="item__info-block">
             <h2 class="item__info-title">商品の情報</h2>
-            <div class="item__category">
-                <span class="item__category-title">カテゴリー</span>
-                @foreach($product->productCategories as $category)
-                    <p class="item__category-text">{{ $category->name }}</p>
-                @endforeach
+            <div class="item__info-row">
+                <span class="item__info-label">カテゴリー</span>
+                <div class="item__info-value item__category-list">
+                    @foreach($product->productCategories as $category)
+                        <p class="item__category-text">{{ $category->name }}</p>
+                    @endforeach
+                </div>
             </div>
-            <div class="item__condition">
-                <span class="item__condition-title">商品の状態</span>
-                <p class="item__condition-text">{{ $product->productCondition->name }}</p>
+            <div class="item__info-row">
+                <span class="item__info-label">商品の状態</span>
+                <p class="item__info-value item__condition-text">{{ $product->productCondition->name }}</p>
             </div>
         </div>
 
