@@ -160,16 +160,16 @@
 .item__comment-user {
     display: flex;
     align-items: center;
+    gap: 20px;
 }
 
-.item__comment-user-mark {
-    display: inline-block;
+.item__comment-user-avatar {
     width: 70px;
     height: 70px;
     background-color: #d9d9d9;
     border-radius: 50%;
-    margin-right: 20px;
-    vertical-align: middle;
+    object-fit: cover;
+    flex-shrink: 0;
 }
 
 .item__comment-user-name {
