@@ -105,7 +105,15 @@
             @if ($product->productComments->isNotEmpty())
                 @foreach($product->productComments as $comment)
                     <div class="item__comment-user">
-                        <span class="item__comment-user-mark"></span>
+                        @if ($comment->user->profile_image_path)
+                            <img
+                                src="{{ asset('storage/' . $comment->user->profile_image_path) }}"
+                                alt="{{ $comment->user->name }}"
+                                class="item__comment-user-avatar"
+                            >
+                        @else
+                            <span class="item__comment-user-avatar"></span>
+                        @endif
                         <span class="item__comment-user-name">{{ $comment->user->name }}</span>
                     </div>
                     <p class="item__comment-text">{{ $comment->comment }}</p>
